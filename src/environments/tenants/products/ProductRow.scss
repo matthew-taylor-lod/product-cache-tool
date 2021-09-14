@@ -1,6 +1,10 @@
 @import "src/palette";
 
 .ProductRow {
+    .product-title, .product-group {
+        font-size: smaller;
+    }
+
     .hidden {
         font-weight: lighter;
         font-style: italic;

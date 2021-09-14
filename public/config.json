@@ -1,10 +1,15 @@
 {
+  "defaultEnvironment" : "localhost",
+  "defaultTenant": "uk",
+
   "environments": [
     {
       "name": "localhost",
       "tenants": [
         "uk",
-        "shl"
+        "ls",
+        "ns",
+        "ie"
       ],
       "productUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/product/{sku}",
       "productsUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/products",
@@ -16,7 +21,9 @@
       "name": "dev",
       "tenants": [
         "uk",
-        "shl"
+        "ls",
+        "ns",
+        "ie"
       ],
       "productUrl": "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
       "productsUrl": "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/products",
@@ -25,5 +32,19 @@
         "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     }
-  ]
+  ],
+  "tenants": {
+    "uk": {
+      "name": "UK"
+    },
+    "ls": {
+      "name": "SHL"
+    },
+    "ns": {
+      "name": "SH"
+    },
+    "ie": {
+      "name": "IE"
+    }
+  }
 }

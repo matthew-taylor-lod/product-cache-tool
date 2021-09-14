@@ -31,20 +31,24 @@ function ProductRow({data, productUrl, cacheUpdateUrls}) {
         ? product.productTitle
         : product.dosageTitle + " " + product.productLabel;
 
+    const price = product.price === -1
+        ? ""
+        : product.currency + product.price;
+
     return (
         <tr className={"ProductRow" + (loading ? " loading-product" : "")}>
             <td>{product.productId}</td>
             <td>
-                <span className={product.hidden ? "hidden" : ""}>
+                <span className={"product-title" + (product.hidden ? " hidden" : "")}>
                     {title}
                 </span>
             </td>
             <td>{product.cmsProductId}</td>
-            <td>{product.productGroup}</td>
-            <td>{product.e24AlgorithmId !== 0 ? data.e24AlgorithmId : ""}</td>
-            <td>{product.currency}{data.price}</td>
+            <td className="product-group">{product.productGroup?.toLowerCase()}</td>
+            <td>{product.e24AlgorithmId !== 0 ? product.e24AlgorithmId : ""}</td>
+            <td>{price}</td>
             <td className={"center in-stock-" + product.inStock}>{product.inStock ? "✓" : "✗"}</td>
-            <td onClick={() => update()}>Update</td>
+            <td onClick={() => update()}>Refresh</td>
         </tr>
     )
 }

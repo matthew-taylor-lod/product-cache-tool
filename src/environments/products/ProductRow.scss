@@ -1,0 +1,25 @@
+@import "src/palette";
+
+.ProductRow {
+    .hidden {
+        font-weight: lighter;
+        font-style: italic;
+
+        &::before {
+            content: "-- ";
+        }
+    }
+    &.loading-product {
+        background: $warning-yellow !important;
+    }
+
+    .in-stock-true {
+        color: $har-medium-green;
+        font-weight: bolder;
+    }
+
+    .in-stock-false {
+        color: $har-pain-red;
+        font-weight: bolder;
+    }
+}

@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from "react-router-dom";
+import {Route} from "react-router-dom";
+import {QueryParamProvider} from "use-query-params";
+
+const basename = (process.env.NODE_ENV === 'production') ? "/selfservicemt" : ""
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <React.StrictMode>
+        <BrowserRouter basename={basename}>
+            <QueryParamProvider ReactRouterRoute={Route}>
+                <App/>
+            </QueryParamProvider>
+        </BrowserRouter>
+    </React.StrictMode>,
   document.getElementById('root')
 );
 

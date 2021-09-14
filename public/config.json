@@ -1,0 +1,29 @@
+{
+  "environments": [
+    {
+      "name": "localhost",
+      "tenants": [
+        "uk",
+        "shl"
+      ],
+      "productUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/products",
+      "cacheUpdateUrls": [
+        "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      ]
+    },
+    {
+      "name": "dev",
+      "tenants": [
+        "uk",
+        "shl"
+      ],
+      "productUrl": "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/products",
+      "cacheUpdateUrls": [
+        "http://dt-management-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
+        "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      ]
+    }
+  ]
+}

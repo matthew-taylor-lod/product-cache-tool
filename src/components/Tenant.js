@@ -1,11 +1,28 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import ProductRow from "./products/ProductRow";
+import ProductRow from "./ProductRow";
+import {useQueryParam} from "use-query-params";
+import {StringParam} from "serialize-query-params";
+import {getProductName} from "./utils";
 import("./Tenant.scss");
 
 function Tenant({name, environmentConfig}) {
 
     const [productMap, setProductMap] = useState({});
+    const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
+
+    if (!sortBy) setSortBy("sku");
+
+    const sortingMethods = {
+        sku: {
+            name: "sku",
+            sort: (a, b) => a.productId - b.productId
+        },
+        name: {
+            name: "name",
+            sort:(a, b) => getProductName(a).localeCompare(getProductName(b))
+        }
+    };
 
     useEffect(() => {
         const productsUrl = environmentConfig.productsUrl.replace("{tenant}", name);
@@ -22,10 +39,17 @@ function Tenant({name, environmentConfig}) {
         setProductMap(pm);
     }
 
-    const productRows = Object.values(productMap).map((v, i) => <ProductRow data={v}
-                                                                            key={i}
-                                                                            productUrl={environmentConfig.productUrl}
-                                                                            cacheUpdateUrls={environmentConfig.cacheUpdateUrls} />);
+    function getSortingFunction() {
+        const sortingMethod = sortingMethods[sortBy];
+        return (sortingMethod) ? sortingMethod.sort : sortingMethods["sku"].sort;
+    }
+
+    const productRows = Object.values(productMap)
+        .sort(getSortingFunction())
+        .map((v, i) => <ProductRow data={v}
+                                   key={i}
+                                   productUrl={environmentConfig.productUrl}
+                                   cacheUpdateUrls={environmentConfig.cacheUpdateUrls} />);
 
     return (
         <div className="Tenant">

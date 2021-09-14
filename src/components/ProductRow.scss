@@ -8,11 +8,8 @@
     .hidden {
         font-weight: lighter;
         font-style: italic;
-
-        &::before {
-            content: "-- ";
-        }
     }
+
     &.loading-product {
         background: $warning-yellow !important;
     }
@@ -25,5 +22,9 @@
     .in-stock-false {
         color: $har-pain-red;
         font-weight: bolder;
+    }
+
+    .refresh {
+        cursor: pointer;
     }
 }

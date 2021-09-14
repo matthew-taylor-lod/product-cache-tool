@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
+import {getProductName} from "./utils";
 import("./ProductRow.scss");
 
 function ProductRow({data, productUrl, cacheUpdateUrls}) {
@@ -27,9 +28,7 @@ function ProductRow({data, productUrl, cacheUpdateUrls}) {
             });
     }
 
-    const title = product.productTitle
-        ? product.productTitle
-        : product.dosageTitle + " " + product.productLabel;
+    const title = getProductName(product);
 
     const price = product.price === -1
         ? ""
@@ -48,7 +47,7 @@ function ProductRow({data, productUrl, cacheUpdateUrls}) {
             <td>{product.e24AlgorithmId !== 0 ? product.e24AlgorithmId : ""}</td>
             <td>{price}</td>
             <td className={"center in-stock-" + product.inStock}>{product.inStock ? "✓" : "✗"}</td>
-            <td onClick={() => update()}>Refresh</td>
+            <td className="refresh" onClick={() => update()}>Refresh</td>
         </tr>
     )
 }

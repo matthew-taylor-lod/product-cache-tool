@@ -1,7 +1,7 @@
 import './App.scss';
 import axios from 'axios';
 import React, {useEffect, useState} from "react";
-import Environment from "./environments/Environment";
+import Environment from "./components/Environment";
 import {useQueryParam} from "use-query-params";
 import {StringParam} from "serialize-query-params";
 

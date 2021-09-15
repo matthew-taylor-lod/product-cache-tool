@@ -19,8 +19,6 @@ div.top {
 
 .App {
   color: $har-charcoal;
-  min-width: 600px;
-  max-width: 1150px;
   margin: auto;
 
   .inner {
@@ -36,11 +34,11 @@ div.top {
   }
 
   .center {
-    text-align: center;
+    text-align: center !important;
   }
 
   .right {
-    text-align: right;
+    text-align: right !important;
   }
 
   .loading {
@@ -93,11 +91,5 @@ div.top {
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
-  }
-
-  input.filter {
-    margin-bottom: 10px;
-    margin-right: 10px;
-    width: 250px;
   }
 }

@@ -1,0 +1,53 @@
+@import "src/palette";
+
+.ProductList {
+    table {
+        span.filterable {
+            cursor: pointer;
+
+            &::after {
+                content: "🔎";
+                font-size: small;
+                opacity: 0;
+            }
+
+            &:hover::after {
+                opacity: 1;
+            }
+        }
+
+        span.refresh-button {
+            cursor: pointer;
+        }
+    }
+
+    div.tools {
+        display: flex;
+
+        span {
+            padding: 3px 5px;
+        }
+
+        div.filter-box {
+            display: inline-block;
+            border: 1px solid $har-charcoal;
+            border-radius: 5px;
+            margin: 0 5px 5px 5px;
+            padding: 0;
+            overflow: hidden;
+
+            input.filter {
+                all: unset;
+                padding: 3px 5px;
+                width: 200px;
+            }
+
+            span {
+                color: $har-white;
+                background: $har-dark-green;
+                border-left: 1px solid $har-charcoal;
+                cursor: pointer;
+            }
+        }
+    }
+}

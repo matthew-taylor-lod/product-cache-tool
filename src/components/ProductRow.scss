@@ -2,7 +2,6 @@
 
 .ProductRow {
     .product-title, .product-group {
-        font-size: smaller;
     }
 
     .hidden {
@@ -26,5 +25,14 @@
 
     .refresh {
         cursor: pointer;
+    }
+
+    .stock-summary {
+        * {
+            all: unset;
+            font-size: x-small;
+            display: block;
+        }
+        text-align: left;
     }
 }

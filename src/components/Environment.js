@@ -1,4 +1,4 @@
-import Tenant from "./Tenant";
+import ProductList from "./ProductList";
 import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -12,7 +12,7 @@ function Environment({environmentConfig, tenantDetails, selectedTenant, setSelec
     );
     const tabPanels = environmentConfig.tenants.map((tenant, i) =>
         <TabPanel>
-            <Tenant name={selectedTenant} environmentConfig={environmentConfig} key={i} />
+            <ProductList tenant={selectedTenant} environmentConfig={environmentConfig} key={i} />
         </TabPanel>
     );
 

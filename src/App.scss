@@ -14,11 +14,15 @@ div.top {
     height: 32px;
     left: 10px;
   }
-
 }
 
 .App {
-  color: $har-charcoal;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: #1a1a1a;
+  letter-spacing: 0.012rem;
+  word-spacing: 0.016rem;
+
   margin: auto;
 
   .inner {
@@ -91,5 +95,17 @@ div.top {
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+  }
+
+  a {
+    all: unset;
+    color: $har-medium-green;
+    cursor: pointer;
+
+    &:hover {
+      color: $har-dark-green;
+      text-decoration: underline;
+    }
+
   }
 }

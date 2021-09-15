@@ -1,25 +1,6 @@
 @import "src/palette";
 
 .ProductList {
-    table {
-        span.filterable {
-            cursor: pointer;
-
-            &::after {
-                content: "🔎";
-                font-size: small;
-                opacity: 0;
-            }
-
-            &:hover::after {
-                opacity: 1;
-            }
-        }
-
-        span.refresh-button {
-            cursor: pointer;
-        }
-    }
 
     div.tools {
         display: flex;
@@ -44,9 +25,13 @@
 
             span {
                 color: $har-white;
-                background: $har-dark-green;
+                background: $har-medium-green;
                 border-left: 1px solid $har-charcoal;
                 cursor: pointer;
+
+                &:hover {
+                    background: $har-dark-green;
+                }
             }
         }
     }

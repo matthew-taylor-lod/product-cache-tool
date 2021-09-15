@@ -3,30 +3,7 @@ import axios from "axios";
 import {getProductName} from "./utils";
 import("./ProductRow.scss");
 
-function ProductRow({data, productUrl, cacheUpdateUrls, setFilter}) {
-
-    const [product, setProduct] = useState(data);
-    const [loading, setLoading] = useState(false);
-
-    function update() {
-        setLoading(true);
-        const updateCalls = cacheUpdateUrls
-            .map(templateUrl => {
-                const url = templateUrl.replace("{tenant}", data.tenant).replace("{sku}", data.productId)
-                return axios.get(url);
-            });
-
-        Promise.all(updateCalls)
-            .then(responses => {
-                const url = productUrl.replace("{tenant}", data.tenant).replace("{sku}", data.productId)
-                axios.get(url)
-                    .then(response => response.data)
-                    .then(json => {
-                        setProduct(json.products[0]);
-                        setLoading(false);
-                    });
-            });
-    }
+function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
 
     const title = getProductName(product);
     const cmsProductId = product.cmsProductId;
@@ -46,34 +23,34 @@ function ProductRow({data, productUrl, cacheUpdateUrls, setFilter}) {
         : <SimpleInStockTd product={product}/>;
 
     return (
-        <tr className={"ProductRow" + (loading ? " loading-product" : "")}>
+        <tr className={"ProductRow" + (isLoading ? " loading-product" : "")}>
             <td>
-                <span className="filterable" onClick={() => setFilter(product.productId)}>
+                <a href="#" onClick={() => setFilter(product.productId)}>
                     {product.productId}
-                </span>
+                </a>
             </td>
             <td className={"product-title" + (product.hidden ? " hidden" : "")}>{title}</td>
             <td>
-                <span className="filterable" onClick={() => setFilter(cmsProductId)}>
+                <a href="#" onClick={() => setFilter(cmsProductId)}>
                     {cmsProductId}
-                </span>
+                </a>
             </td>
             <td>
-                <span className="filterable" onClick={() => setFilter(productGroup)}>
+                <a href="#" onClick={() => setFilter(productGroup)}>
                     {productGroup}
-                </span>
+                </a>
             </td>
             <td>
-                <span className="filterable" onClick={() => setFilter(algoId)}>
+                <a href="#" onClick={() => setFilter(algoId)}>
                     {algoId}
-                </span>
+                </a>
             </td>
             <td>{price}</td>
             {inStockTd}
             <td className="right">
-                <span className="refresh-button" onClick={() => update()}>
+                <a href="#" onClick={() => addProductToLoadingQueue(product)}>
                     Refresh
-                </span>
+                </a>
             </td>
         </tr>
     )

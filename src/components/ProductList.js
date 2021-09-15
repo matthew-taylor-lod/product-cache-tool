@@ -9,6 +9,10 @@ import("./ProductList.scss");
 function ProductList({tenant, environmentConfig}) {
 
     const [productMap, setProductMap] = useState({});
+    const [loadingQueue, setLoadingQueue] = useState([]);
+    const [loadingQueueLookup, setLoadingQueueLookup] = useState(new Set());
+    const [loading, setLoading] = useState(false);
+
     const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
     const [filter, setFilter] = useQueryParam("filter", StringParam);
 
@@ -18,15 +22,77 @@ function ProductList({tenant, environmentConfig}) {
         const productsUrl = environmentConfig.productsUrl.replace("{tenant}", tenant);
         axios.get(productsUrl, {crossdomain: true})
             .then(response => response.data)
-            .then(json => mapProducts(json.products));
+            .then(json => {
+                const pm = {};
+                json.products?.forEach(e => {
+                    pm[e.productId] = e;
+                });
+                setProductMap(pm);
+            });
     }, [tenant, environmentConfig]);
 
-    function mapProducts(products) {
-        const pm = {};
-        products?.forEach(e => {
-            pm[e.productId] = e;
+    useEffect(() => {
+        if (!loading && loadingQueue.length > 0) {
+            const product = loadingQueue.shift();
+            setLoadingQueue( [ ...loadingQueue ]);
+
+            setLoading(true);
+
+            const updateCalls = environmentConfig.cacheUpdateUrls
+                .map(templateUrl => {
+                    const url = templateUrl.replace("{tenant}", product.tenant).replace("{sku}", product.productId)
+                    return axios.get(url);
+                });
+
+            Promise.all(updateCalls)
+                .then(responses => {
+                    const url = environmentConfig.productUrl.replace("{tenant}", product.tenant).replace("{sku}", product.productId)
+                    axios.get(url)
+                        .then(response => response.data)
+                        .then(json => {
+                            const product = json.products[0];
+                            const productId = product.productId;
+
+                            loadingQueueLookup.delete(productId);
+                            setLoadingQueueLookup(new Set(loadingQueueLookup));
+
+                            productMap[productId] = product;
+                            setProductMap({ ...productMap })
+
+                            setLoading(false);
+                        });
+                });
+        }
+    }, [loadingQueue, loading]);
+
+    function addProductToLoadingQueue(product) {
+        const productId = product.productId;
+        if (!loadingQueueLookup.has(productId)) {
+
+            loadingQueueLookup.add(productId)
+            setLoadingQueueLookup(new Set(loadingQueueLookup));
+
+            loadingQueue.push(product);
+            setLoadingQueue([...loadingQueue]);
+        }
+    }
+
+    function refreshAll() {
+        const sortedFilteredProducts = Object.values(productMap)
+            .filter(filterFunction)
+            .sort(getSortingFunction());
+
+        sortedFilteredProducts.forEach(product => {
+            const productId = product.productId;
+
+            if (!loadingQueueLookup.has(productId)) {
+                loadingQueueLookup.add(productId);
+                loadingQueue.push(product);
+            }
         });
-        setProductMap(pm);
+
+        setLoadingQueueLookup(new Set(loadingQueueLookup));
+        setLoadingQueue([...loadingQueue]);
     }
 
     function filterFunction(product) {
@@ -62,14 +128,15 @@ function ProductList({tenant, environmentConfig}) {
         return (sortingMethod) ? sortingMethod.sort : sortingMethods["sku"].sort;
     }
 
-    const productRows = Object.values(productMap)
+    const sortedFilteredProducts = Object.values(productMap)
         .filter(filterFunction)
-        .sort(getSortingFunction())
-        .map((v) => <ProductRow data={v}
-                                key={v.productId}
-                                productUrl={environmentConfig.productUrl}
-                                cacheUpdateUrls={environmentConfig.cacheUpdateUrls}
-                                setFilter={setFilter}/>);
+        .sort(getSortingFunction());
+
+    const productRows = sortedFilteredProducts.map((v) => <ProductRow product={v}
+                                                                addProductToLoadingQueue={addProductToLoadingQueue}
+                                                                setFilter={setFilter}
+                                                                isLoading={loadingQueueLookup.has(v.productId)}
+                                                                key={v.productId} />);
 
     const showing = productRows.length;
     const total = Object.values(productMap).length;
@@ -97,7 +164,7 @@ function ProductList({tenant, environmentConfig}) {
                     <th>Algo ID</th>
                     <th>Price</th>
                     <th colSpan={2}>In Stock</th>
-                    <th className="right refresh">Refresh All</th>
+                    <th><a href="#" onClick={() => refreshAll()}>Refresh All</a></th>
                 </tr>
                 </thead>
                 <tbody>

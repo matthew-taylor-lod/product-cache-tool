@@ -1,5 +1,3 @@
-import React, {useState} from "react";
-import axios from "axios";
 import {getProductName} from "./utils";
 import("./ProductRow.scss");
 
@@ -25,32 +23,32 @@ function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
     return (
         <tr className={"ProductRow" + (isLoading ? " loading-product" : "")}>
             <td>
-                <a href="#" onClick={() => setFilter(product.productId)}>
+                <button onClick={() => setFilter(product.productId)}>
                     {product.productId}
-                </a>
+                </button>
             </td>
             <td className={"product-title" + (product.hidden ? " hidden" : "")}>{title}</td>
             <td>
-                <a href="#" onClick={() => setFilter(cmsProductId)}>
+                <button onClick={() => setFilter(cmsProductId)}>
                     {cmsProductId}
-                </a>
+                </button>
             </td>
             <td>
-                <a href="#" onClick={() => setFilter(productGroup)}>
+                <button onClick={() => setFilter(productGroup)}>
                     {productGroup}
-                </a>
+                </button>
             </td>
             <td>
-                <a href="#" onClick={() => setFilter(algoId)}>
+                <button onClick={() => setFilter(algoId)}>
                     {algoId}
-                </a>
+                </button>
             </td>
             <td>{price}</td>
             {inStockTd}
             <td className="right">
-                <a href="#" onClick={() => addProductToLoadingQueue(product)}>
+                <button onClick={() => addProductToLoadingQueue(product)}>
                     Refresh
-                </a>
+                </button>
             </td>
         </tr>
     )

@@ -164,7 +164,7 @@ function ProductList({tenant, environmentConfig}) {
                     <th>Algo ID</th>
                     <th>Price</th>
                     <th colSpan={2}>In Stock</th>
-                    <th><a href="#" onClick={() => refreshAll()}>Refresh All</a></th>
+                    <th><button onClick={() => refreshAll()}>Refresh All</button></th>
                 </tr>
                 </thead>
                 <tbody>

@@ -4,9 +4,11 @@ body {
   overflow-y: scroll;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: #1a1a1a;
+  letter-spacing: 0.012rem;
+  word-spacing: 0.016rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

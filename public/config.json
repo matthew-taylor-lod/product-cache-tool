@@ -31,6 +31,21 @@
         "http://dt-management-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
         "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
+    },
+    {
+      "name": "dev2",
+      "tenants": [
+        "uk",
+        "ls",
+        "ns",
+        "ie"
+      ],
+      "productUrl": "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant}/api/products",
+      "cacheUpdateUrls": [
+        "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
+        "http://dt-dev2-del-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      ]
     }
   ],
   "tenants": {

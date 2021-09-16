@@ -17,16 +17,15 @@
         div.filter {
             div.filter-box {
                 display: inline-block;
-                border: 1px solid $har-charcoal;
-                border-right: none;
-                border-radius: 5px;
                 margin: 0 10px;
                 padding: 0;
 
                 input.filter-input {
                     all: unset;
+                    border: 1px solid $har-charcoal;
+                    border-right: none;
+                    border-radius: 5px 0 0 5px;
                     padding: 1px 3px;
-
                     width: 250px;
                 }
 
@@ -34,7 +33,7 @@
                     display: inline-block;
                     background: $har-medium-green;
                     color: $har-white;
-                    border-right: 1px solid $har-charcoal;
+                    border: 1px solid $har-charcoal;
                     border-radius: 0 5px 5px 0;
                     padding: 1px 10px;
                     cursor: pointer;

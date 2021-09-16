@@ -13,7 +13,7 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
 
     useEffect(() => {
         const productsUrl = environmentConfig.productsUrl.replace("{tenant}", tenant);
-        axios.get(productsUrl, {crossdomain: true})
+        axios.get(productsUrl)
             .then(response => response.data)
             .then(json => {
                 const pm = {};

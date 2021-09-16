@@ -1,22 +1,15 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import ProductRow from "./ProductRow";
-import {useQueryParam} from "use-query-params";
-import {StringParam} from "serialize-query-params";
 import {getProductName, sortingMethods} from "./utils";
 import("./ProductList.scss");
 
-function ProductList({tenant, environmentConfig}) {
+function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setSortBy}) {
 
     const [productMap, setProductMap] = useState({});
     const [loadingQueue, setLoadingQueue] = useState([]);
     const [loadingQueueLookup, setLoadingQueueLookup] = useState(new Set());
     const [loading, setLoading] = useState(false);
-
-    const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
-    const [filter, setFilter] = useQueryParam("filter", StringParam);
-
-    if (!sortBy) setSortBy("name");
 
     useEffect(() => {
         const productsUrl = environmentConfig.productsUrl.replace("{tenant}", tenant);

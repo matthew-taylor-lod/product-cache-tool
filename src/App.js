@@ -12,6 +12,11 @@ function App() {
     const [selectedTenant, setSelectedTenant] = useQueryParam("tenant", StringParam);
     const [selectedEnvironment, setSelectedEnvironment] = useQueryParam("env", StringParam);
 
+    const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
+    const [filter, setFilter] = useQueryParam("filter", StringParam);
+
+    if (!sortBy) setSortBy("name");
+
     useEffect(() => {
         const configPath = "config.json" + timestampArg;
         axios.get(configPath)
@@ -28,12 +33,25 @@ function App() {
     },[setConfig, setSelectedEnvironment, setSelectedTenant]);
 
     const environments = config?.environments.filter(e => e.name === selectedEnvironment).map(e =>
-        <Environment environmentConfig={e} tenantDetails={config.tenants} selectedTenant={selectedTenant} setSelectedTenant={setSelectedTenant} />
+        <Environment
+            environmentConfig={e}
+            tenantDetails={config.tenants}
+            selectedTenant={selectedTenant}
+            setSelectedTenant={setSelectedTenant}
+            filter={filter}
+            setFilter={setFilter}
+            sortBy={sortBy}
+            setSortBy={setSortBy}/>
     );
 
     return (
         <>
-            <div className="top">
+            <div className="top" onClick={() =>{
+                setSelectedEnvironment(config.defaultEnvironment);
+                setSelectedTenant(config.defaultTenant);
+                setFilter("");
+                setSortBy("");
+            }}>
                 <div className="App">
                     <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo"/>
                     Product Cache Tool

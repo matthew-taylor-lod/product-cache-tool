@@ -3,7 +3,7 @@ import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-function Environment({environmentConfig, tenantDetails, selectedTenant, setSelectedTenant}) {
+function Environment({environmentConfig, tenantDetails, selectedTenant, setSelectedTenant, filter, setFilter, sortBy, setSortBy}) {
 
     const tabs = environmentConfig.tenants.map(tenant =>
         <Tab>
@@ -12,7 +12,13 @@ function Environment({environmentConfig, tenantDetails, selectedTenant, setSelec
     );
     const tabPanels = environmentConfig.tenants.map((tenant, i) =>
         <TabPanel>
-            <ProductList tenant={selectedTenant} environmentConfig={environmentConfig} key={i} />
+            <ProductList tenant={selectedTenant}
+                         environmentConfig={environmentConfig}
+                         filter={filter}
+                         setFilter={setFilter}
+                         sortBy={sortBy}
+                         setSortBy={setSortBy}
+                         key={i} />
         </TabPanel>
     );
 

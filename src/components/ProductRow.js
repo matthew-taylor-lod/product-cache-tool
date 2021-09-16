@@ -16,10 +16,6 @@ function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
     const hasStockOverrides = (
         product.cmsProductOutOfStock || product.cmsProductProxyOutOfStock || product.cmsProxyAlgoOutOfStock);
 
-    const inStockTd = hasStockOverrides
-        ? <ComplexInStockTd product={product}/>
-        : <SimpleInStockTd product={product}/>;
-
     return (
         <tr className={"ProductRow" + (isLoading ? " loading-product" : "")}>
             <td>
@@ -44,7 +40,7 @@ function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
                 </button>
             </td>
             <td>{price}</td>
-            {inStockTd}
+                <InStockTd product={product}/>
             <td className="right">
                 <button onClick={() => addProductToLoadingQueue(product)}>
                     Refresh
@@ -54,26 +50,21 @@ function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
     )
 }
 
-function SimpleInStockTd({product}) {
-    return (
-        <td colSpan={2} className={"in-stock-" + product.inStock}>
-            {product.inStock ? "✓" : "✗"}
-        </td>
-    );
-}
-
-function ComplexInStockTd({product}) {
+function InStockTd({product}) {
     const reasons = [];
     if (product.adminOutOfStock) reasons.push("admin");
-    if (product.cmsProxyAlgoOutOfStock) reasons.push("algo-override");
-    if (product.cmsProductOutOfStock) reasons.push("product-override");
-    if (product.cmsProductProxyOutOfStock) reasons.push("algo-override");
+    if (product.cmsProxyAlgoOutOfStock) reasons.push("algo");
+    if (product.cmsProductOutOfStock) reasons.push("product");
+    if (product.cmsProductDosageOutOfStock) reasons.push("dosage");
+    if (product.cmsProductProxyOutOfStock) reasons.push("proxy");
 
     const summary = reasons.map(e => <li>{e}</li>);
 
     return (
         <>
-            <td className="in-stock-false">✗</td>
+            <td className={"in-stock-" + product.inStock}>
+                {product.inStock ? "✓" : "✗"}
+            </td>
             <td className="in-stock-false stock-summary">
                 <ul>
                     {summary}

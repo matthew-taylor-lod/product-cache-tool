@@ -16,7 +16,7 @@ function ProductList({tenant, environmentConfig}) {
     const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
     const [filter, setFilter] = useQueryParam("filter", StringParam);
 
-    if (!sortBy) setSortBy("sku");
+    if (!sortBy) setSortBy("name");
 
     useEffect(() => {
         const productsUrl = environmentConfig.productsUrl.replace("{tenant}", tenant);
@@ -128,6 +128,10 @@ function ProductList({tenant, environmentConfig}) {
         return (sortingMethod) ? sortingMethod.sort : sortingMethods["sku"].sort;
     }
 
+    function isSortBySelected(name) {
+        return (sortBy === name) ? "selected" : "";
+    }
+
     const sortedFilteredProducts = Object.values(productMap)
         .filter(filterFunction)
         .sort(getSortingFunction());
@@ -143,17 +147,29 @@ function ProductList({tenant, environmentConfig}) {
 
     return (
         <div className="ProductList">
+
             <div className="tools">
-                <span>Filter by</span>
-                <div className="filter-box">
-                    <input className="filter"
-                           placeholder="type here to filter table"
-                           value={filter}
-                           onChange={e => setFilter(e.target.value)}/>
-                    <span onClick={() => setFilter("") }>clear</span>
+                <div className="filter">
+                    <span>Filter by</span>
+                    <div className="filter-box">
+                        <input className="filter-input"
+                               placeholder="type here to filter table"
+                               value={filter}
+                               onChange={e => setFilter(e.target.value)}/>
+                        <div className="filter-clear" onClick={() => setFilter("") }>
+                            clear
+                        </div>
+                    </div>
+                    <span>Showing {showing} of {total}</span>
                 </div>
-                <span>Showing {showing} of {total}</span>
+                <div className="sort-by">
+                    <span>Sort by </span>
+                    <button className={isSortBySelected("name")} onClick={() => setSortBy("name")}>Name</button>
+                    <span> / </span>
+                    <button className={isSortBySelected("sku")} onClick={() => setSortBy("sku")}>SKU</button>
+                </div>
             </div>
+
             {productRows.length > 0 && <table className="striped">
                 <thead>
                 <tr>

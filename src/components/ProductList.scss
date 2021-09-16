@@ -2,36 +2,58 @@
 
 .ProductList {
 
-    div.tools {
-        display: flex;
+    .tools {
+        margin-bottom: 5px;
 
-        span {
-            padding: 3px 5px;
+        div {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+
+            &:not(:last-child) {
+                margin-right: 50px;
+            }
         }
 
-        div.filter-box {
-            display: inline-block;
-            border: 1px solid $har-charcoal;
-            border-radius: 5px;
-            margin: 0 5px 5px 5px;
-            padding: 0;
-            overflow: hidden;
+        div.filter {
+            div.filter-box {
+                display: inline-block;
+                border: 1px solid $har-charcoal;
+                border-right: none;
+                border-radius: 5px;
+                margin: 0 10px;
+                padding: 0;
 
-            input.filter {
-                all: unset;
-                padding: 3px 5px;
-                width: 200px;
+                input.filter-input {
+                    all: unset;
+                    padding: 1px 3px;
+
+                    width: 250px;
+                }
+
+                div.filter-clear {
+                    display: inline-block;
+                    background: $har-medium-green;
+                    color: $har-white;
+                    border-right: 1px solid $har-charcoal;
+                    border-radius: 0 5px 5px 0;
+                    padding: 1px 10px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: $har-dark-green;
+                    }
+                }
             }
 
-            span {
-                color: $har-white;
-                background: $har-medium-green;
-                border-left: 1px solid $har-charcoal;
-                cursor: pointer;
+            span.filter-showing {
+                padding-bottom: 10px;
+            }
+        }
 
-                &:hover {
-                    background: $har-dark-green;
-                }
+        div.sort-by {
+            .selected {
+                font-weight: bold;
             }
         }
     }

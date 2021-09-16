@@ -1,107 +1,139 @@
 @import "palette";
 
 div.top {
-  background: $har-white;
-  color: $har-charcoal;
-  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  font-size: 2.3em;
-  font-weight: 300;
-  padding: 10px 10px;
-  text-align: center;
+    background: $har-white;
+    color: $har-charcoal;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    font-size: 2.3em;
+    font-weight: 300;
+    padding: 10px 10px;
+    text-align: center;
 
-  img {
-    position: absolute;
-    height: 36px;
-    left: 20px;
-    top: 20px;
-  }
+    img {
+        position: absolute;
+        height: 36px;
+        left: 20px;
+        top: 20px;
+    }
 }
 
 .App {
-  margin: auto;
+    max-width: 1280px;
+    margin: auto;
 
-  .inner {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-  }
-
-  h1, .h1 {
-    font-size: 2.0em;
-    font-weight: 300;
-    margin: 0.5em 0;
-  }
-
-  .center {
-    text-align: center !important;
-  }
-
-  .right {
-    text-align: right !important;
-  }
-
-  .loading {
-    display: block;
-    text-align: center;
-    margin-top: 30px;
-
-    p {
-      font-weight: bold;
-    }
-  }
-
-  table.striped {
-    border: 1px solid $har-medium-grey;
-    border-spacing: 0;
-
-    th {
-      background: $har-light-grey;
-      text-align: left;
+    .inner {
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-bottom: 20px;
     }
 
-    tr {
-      th, td {
-        border-bottom: thin solid $har-medium-grey;
-      }
+    h1, .h1 {
+        font-size: 2.0em;
+        font-weight: 300;
+        margin: 0.5em 0;
     }
 
-    tr:last-child {
-      td {
-        border: 0;
-      }
+    .center {
+        text-align: center !important;
     }
 
-    tr:nth-child(odd) {
-      background: $har-white;
+    .right {
+        text-align: right !important;
     }
 
-    tr:nth-child(even) {
-      background: $har-light-grey;
+    .loading {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+
+        p {
+            font-weight: bold;
+        }
     }
 
-    td, th {
-      padding: 2px 5px;
+    table.striped {
+        border: 1px solid $har-medium-grey;
+        border-spacing: 0;
+
+        th {
+            background: $har-light-grey;
+            text-align: left;
+        }
+
+        tr {
+            th, td {
+                border-bottom: thin solid $har-medium-grey;
+            }
+        }
+
+        tr:last-child {
+            td {
+                border: 0;
+            }
+        }
+
+        tr:nth-child(odd) {
+            background: $har-white;
+        }
+
+        tr:nth-child(even) {
+            background: $har-light-grey;
+        }
+
+        td, th {
+            width: auto;
+            padding: 2px 10px;
+
+            &.min {
+                width: 1%;
+                white-space: nowrap;
+            }
+        }
     }
-  }
 
-  .unselectable {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-  }
-
-  button {
-    all: unset;
-    color: $har-medium-green;
-    cursor: pointer;
-
-    &:hover {
-      color: $har-dark-green;
-      text-decoration: underline;
+    .unselectable {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
     }
 
-  }
+    button {
+        all: unset;
+        color: $har-medium-green;
+        cursor: pointer;
+
+        &:hover {
+            color: $har-dark-green;
+            text-decoration: underline;
+        }
+    }
+
+    .environment-selector {
+        > .react-tabs__tab-list {
+            border: none;
+
+            .react-tabs__tab {
+                background: none;
+                opacity: 0.4;
+                padding: 0;
+                border: none;
+                bottom: 0;
+
+                &--selected {
+                    opacity: 1;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 50px;
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+    }
 }

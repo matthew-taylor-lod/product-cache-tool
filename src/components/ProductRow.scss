@@ -1,9 +1,6 @@
 @import "src/palette";
 
 .ProductRow {
-    .product-title, .product-group {
-    }
-
     .hidden {
         font-weight: lighter;
         font-style: italic;
@@ -29,6 +26,6 @@
             font-size: x-small;
             display: block;
         }
-        text-align: left;
+        padding-left: 0 !important;
     }
 }

@@ -1,7 +1,6 @@
 @import "src/palette";
 
 .ProductList {
-
     .tools {
         margin-bottom: 5px;
 
@@ -56,5 +55,9 @@
                 font-weight: bold;
             }
         }
+    }
+
+    table {
+        width: 100%;
     }
 }

@@ -140,7 +140,6 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
 
     return (
         <div className="ProductList">
-
             <div className="tools">
                 <div className="filter">
                     <span>Filter by</span>
@@ -163,23 +162,24 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
                 </div>
             </div>
 
-            {productRows.length > 0 && <table className="striped">
-                <thead>
-                <tr>
-                    <th>SKU</th>
-                    <th>Name</th>
-                    <th>Product ID</th>
-                    <th>Group</th>
-                    <th>Algo ID</th>
-                    <th>Price</th>
-                    <th colSpan={2}>In Stock</th>
-                    <th><button onClick={() => refreshAll()}>Refresh All</button></th>
-                </tr>
-                </thead>
-                <tbody>
-                {productRows}
-                </tbody>
-            </table>
+            {productRows.length > 0 &&
+                <table className="striped">
+                    <thead>
+                    <tr>
+                        <th className="min">SKU</th>
+                        <th>Name</th>
+                        <th className="min">Product</th>
+                        <th className="min">Group</th>
+                        <th className="min">Algo</th>
+                        <th className="min">Price</th>
+                        <th colSpan={2} className="min">In Stock</th>
+                        <th className="min"><button onClick={() => refreshAll()}>Refresh All</button></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {productRows}
+                    </tbody>
+                </table>
             }
         </div>
     )

@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react";
 import Environment from "./components/Environment";
 import {useQueryParam} from "use-query-params";
 import {StringParam} from "serialize-query-params";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 function App() {
     const timestampArg = "?ts=" + new Date().getTime();
@@ -32,17 +33,28 @@ function App() {
             });
     },[setConfig, setSelectedEnvironment, setSelectedTenant]);
 
-    const environments = config?.environments.filter(e => e.name === selectedEnvironment).map(e =>
-        <Environment
-            environmentConfig={e}
-            tenantDetails={config.tenants}
-            selectedTenant={selectedTenant}
-            setSelectedTenant={setSelectedTenant}
-            filter={filter}
-            setFilter={setFilter}
-            sortBy={sortBy}
-            setSortBy={setSortBy}/>
+    if (!config) {
+        return null;
+    }
+
+    const tabs = config.environments.map(e => <Tab><h1>{e.name}</h1></Tab>);
+
+    const tabPanels = config.environments.map(e =>
+        <TabPanel>
+            <Environment
+                environmentConfig={e}
+                tenantDetails={config.tenants}
+                selectedTenant={selectedTenant}
+                setSelectedTenant={setSelectedTenant}
+                filter={filter}
+                setFilter={setFilter}
+                sortBy={sortBy}
+                setSortBy={setSortBy}/>
+        </TabPanel>
     );
+
+    const environmentList = config.environments.map(e => e.name);
+    const index = environmentList.indexOf(selectedEnvironment);
 
     return (
         <>
@@ -59,7 +71,10 @@ function App() {
             </div>
             <div className="App">
                 <div className="inner">
-                    { environments }
+                    <Tabs className="environment-selector" selectedIndex={index} onSelect={newIndex => setSelectedEnvironment(environmentList[newIndex])}>
+                        <TabList>{tabs}</TabList>
+                        {tabPanels}
+                    </Tabs>
                 </div>
             </div>
         </>

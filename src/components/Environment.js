@@ -26,11 +26,8 @@ function Environment({environmentConfig, tenantDetails, selectedTenant, setSelec
 
     return (
         <div className="Environment">
-            <h1>{environmentConfig.name}</h1>
-            <Tabs selectedIndex={index} onSelect={index => setSelectedTenant(environmentConfig.tenants[index])}>
-                <TabList>
-                    {tabs}
-                </TabList>
+            <Tabs selectedIndex={index} onSelect={newIndex => setSelectedTenant(environmentConfig.tenants[newIndex])}>
+                <TabList>{tabs}</TabList>
                 {tabPanels}
             </Tabs>
         </div>

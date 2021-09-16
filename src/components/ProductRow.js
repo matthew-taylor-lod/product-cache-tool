@@ -13,35 +13,32 @@ function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
         ? product.currency + product.price
         : ""
 
-    const hasStockOverrides = (
-        product.cmsProductOutOfStock || product.cmsProductProxyOutOfStock || product.cmsProxyAlgoOutOfStock);
-
     return (
         <tr className={"ProductRow" + (isLoading ? " loading-product" : "")}>
-            <td>
+            <td className="min">
                 <button onClick={() => setFilter(product.productId)}>
                     {product.productId}
                 </button>
             </td>
-            <td className={"product-title" + (product.hidden ? " hidden" : "")}>{title}</td>
-            <td>
+            <td className={product.hidden ? " hidden" : ""}>{title}</td>
+            <td className="min">
                 <button onClick={() => setFilter(cmsProductId)}>
                     {cmsProductId}
                 </button>
             </td>
-            <td>
+            <td className="min">
                 <button onClick={() => setFilter(productGroup)}>
                     {productGroup}
                 </button>
             </td>
-            <td>
+            <td className="min">
                 <button onClick={() => setFilter(algoId)}>
                     {algoId}
                 </button>
             </td>
-            <td>{price}</td>
+            <td className="min">{price}</td>
                 <InStockTd product={product}/>
-            <td className="right">
+            <td className="min right">
                 <button onClick={() => addProductToLoadingQueue(product)}>
                     Refresh
                 </button>
@@ -62,10 +59,10 @@ function InStockTd({product}) {
 
     return (
         <>
-            <td className={"in-stock-" + product.inStock}>
+            <td className={"min in-stock-" + product.inStock}>
                 {product.inStock ? "✓" : "✗"}
             </td>
-            <td className="in-stock-false stock-summary">
+            <td className="min in-stock-false stock-summary">
                 <ul>
                     {summary}
                 </ul>

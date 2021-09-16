@@ -1,6 +1,7 @@
 {
   "defaultEnvironment" : "dev",
   "defaultTenant": "uk",
+  "defaultSortBy": "name",
 
   "environments": [
     {

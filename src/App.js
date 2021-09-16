@@ -14,8 +14,6 @@ function App() {
     const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
     const [filter, setFilter] = useQueryParam("filter", StringParam);
 
-    if (!sortBy) setSortBy("name");
-
     useEffect(() => {
         const timestampArg = "?ts=" + new Date().getTime();
         const configPath = "config.json" + timestampArg;
@@ -28,14 +26,18 @@ function App() {
     },[setConfig]);
 
     useEffect(() => {
-        if (!selectedEnvironment) {
-            setSelectedEnvironment(config.defaultEnvironment);
+        if (config) {
+            if (!selectedEnvironment) {
+                setSelectedEnvironment(config.defaultEnvironment);
+            }
+            if (!selectedTenant) {
+                setSelectedTenant(config.defaultTenant);
+            }
+            if (!sortBy) {
+                setSortBy(config.defaultSortBy)
+            }
         }
-        if (!selectedTenant) {
-            setSelectedTenant(config.defaultTenant);
-        }
-    }, [config, selectedEnvironment, setSelectedEnvironment, selectedTenant, setSelectedTenant])
-
+    }, [config, selectedEnvironment, setSelectedEnvironment, selectedTenant, setSelectedTenant, sortBy, setSortBy])
 
     if (!config) {
         return null;
@@ -67,8 +69,8 @@ function App() {
     return (
         <>
             <div className="top" onClick={() =>{
-                setSelectedEnvironment(config.defaultEnvironment);
-                setSelectedTenant(config.defaultTenant);
+                setSelectedEnvironment("");
+                setSelectedTenant("");
                 setFilter("");
                 setSortBy("");
             }}>

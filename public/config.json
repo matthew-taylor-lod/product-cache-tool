@@ -1,20 +1,34 @@
 {
-  "defaultEnvironment" : "localhost",
+  "defaultEnvironment" : "dev",
   "defaultTenant": "uk",
 
   "environments": [
     {
-      "name": "localhost",
+      "name": "preprod",
       "tenants": [
         "uk",
         "ls",
         "ns",
         "ie"
       ],
-      "productUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/products",
+      "productUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
-        "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+        "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      ]
+    },
+    {
+      "name": "black",
+      "tenants": [
+        "uk",
+        "ls",
+        "ns",
+        "ie"
+      ],
+      "productUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/products",
+      "cacheUpdateUrls": [
+        "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     },
     {
@@ -25,10 +39,9 @@
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/products",
+      "productUrl": "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
-        "http://dt-management-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
         "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     },
@@ -45,6 +58,38 @@
       "cacheUpdateUrls": [
         "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
         "http://dt-dev2-del-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      ]
+    },
+    {
+      "name": "localhost",
+      "hidden": true,
+      "tenants": [
+        "uk",
+        "ls",
+        "ns",
+        "ie"
+      ],
+      "productUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/products",
+      "cacheUpdateUrls": [
+        "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      ]
+    },
+    {
+      "name": "live",
+      "hidden": true,
+      "tenants": [
+        "uk",
+        "ls",
+        "ns",
+        "ie"
+      ],
+      "productUrl": "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/products",
+      "cacheUpdateUrls": [
+        "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-live-del-01/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-live-del-02/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     }
   ],

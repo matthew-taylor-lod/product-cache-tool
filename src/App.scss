@@ -126,6 +126,10 @@ div.top {
                     opacity: 1;
                 }
 
+                &--disabled {
+                    display: none;
+                }
+
                 &:not(:last-child) {
                     margin-right: 50px;
                 }

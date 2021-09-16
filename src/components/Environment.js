@@ -6,19 +6,19 @@ import 'react-tabs/style/react-tabs.css';
 function Environment({environmentConfig, tenantDetails, selectedTenant, setSelectedTenant, filter, setFilter, sortBy, setSortBy}) {
 
     const tabs = environmentConfig.tenants.map(tenant =>
-        <Tab>
+        <Tab key={tenant}>
             {tenantDetails[tenant].name}
         </Tab>
     );
-    const tabPanels = environmentConfig.tenants.map((tenant, i) =>
-        <TabPanel>
+    const tabPanels = environmentConfig.tenants.map(tenant =>
+        <TabPanel key={tenant}>
             <ProductList tenant={selectedTenant}
                          environmentConfig={environmentConfig}
                          filter={filter}
                          setFilter={setFilter}
                          sortBy={sortBy}
                          setSortBy={setSortBy}
-                         key={i} />
+            />
         </TabPanel>
     );
 

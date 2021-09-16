@@ -7,8 +7,6 @@ import {StringParam} from "serialize-query-params";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 function App() {
-    const timestampArg = "?ts=" + new Date().getTime();
-
     const [config, setConfig] = useState(null);
     const [selectedTenant, setSelectedTenant] = useQueryParam("tenant", StringParam);
     const [selectedEnvironment, setSelectedEnvironment] = useQueryParam("env", StringParam);
@@ -19,28 +17,37 @@ function App() {
     if (!sortBy) setSortBy("name");
 
     useEffect(() => {
+        const timestampArg = "?ts=" + new Date().getTime();
         const configPath = "config.json" + timestampArg;
         axios.get(configPath)
             .then(response => response.data)
             .then(json => {
                 setConfig(json);
-                if (!selectedEnvironment) {
-                    setSelectedEnvironment(json.defaultEnvironment);
-                }
-                if (!selectedTenant) {
-                    setSelectedTenant(json.defaultTenant);
-                }
+
             });
-    },[setConfig, setSelectedEnvironment, setSelectedTenant]);
+    },[setConfig]);
+
+    useEffect(() => {
+        if (!selectedEnvironment) {
+            setSelectedEnvironment(config.defaultEnvironment);
+        }
+        if (!selectedTenant) {
+            setSelectedTenant(config.defaultTenant);
+        }
+    }, [config, selectedEnvironment, setSelectedEnvironment, selectedTenant, setSelectedTenant])
+
 
     if (!config) {
         return null;
     }
 
-    const tabs = config.environments.map(e => <Tab><h1>{e.name}</h1></Tab>);
+    const tabs = config.environments.map(e =>
+        <Tab key={e.name} disabled={e.hidden === true && selectedEnvironment !== e.name}>
+            <h1>{e.name}</h1>
+        </Tab>);
 
     const tabPanels = config.environments.map(e =>
-        <TabPanel>
+        <TabPanel key={e.name}>
             <Environment
                 environmentConfig={e}
                 tenantDetails={config.tenants}
@@ -49,7 +56,8 @@ function App() {
                 filter={filter}
                 setFilter={setFilter}
                 sortBy={sortBy}
-                setSortBy={setSortBy}/>
+                setSortBy={setSortBy}
+            />
         </TabPanel>
     );
 

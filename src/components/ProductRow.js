@@ -1,4 +1,5 @@
 import {getProductName} from "./utils";
+import React from "react";
 import("./ProductRow.scss");
 
 function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
@@ -55,7 +56,7 @@ function InStockTd({product}) {
     if (product.cmsProductDosageOutOfStock) reasons.push("dosage");
     if (product.cmsProductProxyOutOfStock) reasons.push("proxy");
 
-    const summary = reasons.map(e => <li>{e}</li>);
+    const summary = reasons.map(e => <li key={e}>{e}</li>);
 
     return (
         <>

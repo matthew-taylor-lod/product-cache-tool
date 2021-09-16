@@ -21,8 +21,10 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
                     pm[e.productId] = e;
                 });
                 setProductMap(pm);
-            });
-    }, [tenant, environmentConfig]);
+            })
+            .catch(error => console.log("Error: " + error));
+
+    }, [environmentConfig, tenant, setProductMap]);
 
     useEffect(() => {
         if (!loading && loadingQueue.length > 0) {
@@ -56,7 +58,7 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
                         });
                 });
         }
-    }, [loadingQueue, loading]);
+    }, [environmentConfig, loading, setLoading, loadingQueue, setLoadingQueue, loadingQueueLookup, setLoadingQueueLookup, productMap, setProductMap]);
 
     function addProductToLoadingQueue(product) {
         const productId = product.productId;
@@ -129,11 +131,11 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
         .filter(filterFunction)
         .sort(getSortingFunction());
 
-    const productRows = sortedFilteredProducts.map((v) => <ProductRow product={v}
-                                                                addProductToLoadingQueue={addProductToLoadingQueue}
-                                                                setFilter={setFilter}
-                                                                isLoading={loadingQueueLookup.has(v.productId)}
-                                                                key={v.productId} />);
+    const productRows = sortedFilteredProducts.map((v) => <ProductRow key={v.productId}
+                                                                      product={v}
+                                                                      addProductToLoadingQueue={addProductToLoadingQueue}
+                                                                      setFilter={setFilter}
+                                                                      isLoading={loadingQueueLookup.has(v.productId)}/>);
 
     const showing = productRows.length;
     const total = Object.values(productMap).length;

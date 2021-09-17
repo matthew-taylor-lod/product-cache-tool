@@ -72,7 +72,7 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
         }
     }
 
-    function refreshAll() {
+    function updateAll() {
         const sortedFilteredProducts = Object.values(productMap)
             .filter(filterFunction)
             .sort(getSortingFunction());
@@ -175,7 +175,7 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
                         <th className="min">Algo</th>
                         <th className="min">Price</th>
                         <th colSpan={2} className="min">In Stock</th>
-                        <th className="min"><button onClick={() => refreshAll()}>Refresh All</button></th>
+                        <th className="min"><button onClick={() => updateAll()}>Update All</button></th>
                     </tr>
                     </thead>
                     <tbody>

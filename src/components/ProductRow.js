@@ -41,7 +41,7 @@ function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
                 <InStockTd product={product}/>
             <td className="min right">
                 <button onClick={() => addProductToLoadingQueue(product)}>
-                    Refresh
+                    Update
                 </button>
             </td>
         </tr>

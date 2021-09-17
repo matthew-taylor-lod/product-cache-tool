@@ -7,7 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import {Route} from "react-router-dom";
 import {QueryParamProvider} from "use-query-params";
 
-const basename = (process.env.NODE_ENV === 'production') ? "/selfservicemt" : ""
+const basename = (process.env.NODE_ENV === 'production') ? "/product-cache-tool" : ""
 
 ReactDOM.render(
     <React.StrictMode>

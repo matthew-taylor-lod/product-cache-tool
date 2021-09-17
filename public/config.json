@@ -1,5 +1,5 @@
 {
-  "defaultEnvironment" : "dev",
+  "defaultEnvironment" : "preprod",
   "defaultTenant": "uk",
   "defaultSortBy": "name",
 
@@ -12,10 +12,12 @@
         "ns",
         "ie"
       ],
-      "productUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/products",
+      "productUrl": "http://dt-preprod-del-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-preprod-del-01:49080/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
-        "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+        "http://dt-preprod-del-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-preprod-del-02:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-preprod-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     },
     {
@@ -26,10 +28,11 @@
         "ns",
         "ie"
       ],
-      "productUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/products",
+      "productUrl": "http://dt-preprod-del-03:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-preprod-del-03:49080/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
-        "https://uk.dev.experthealth.local/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+        "http://dt-preprod-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-preprod-del-03:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     },
     {
@@ -43,7 +46,8 @@
       "productUrl": "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
       "productsUrl": "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
-        "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+        "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     },
     {
@@ -54,11 +58,11 @@
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant}/api/products",
+      "productUrl": "http://dt-dev2-del-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-dev2-del-01:49080/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
         "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
-        "http://dt-dev2-del-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+        "http://dt-dev2-del-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     },
     {
@@ -85,12 +89,12 @@
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/products",
+      "productUrl": "http://dt-live-del-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
+      "productsUrl": "http://dt-live-del-01:49080/blueprint/servlet/eh/{tenant}/api/products",
       "cacheUpdateUrls": [
-        "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-live-del-01/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-live-del-02/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+        "http://dt-live-del-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-live-del-02:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
+        "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
       ]
     }
   ],

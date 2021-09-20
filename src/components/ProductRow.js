@@ -1,51 +1,51 @@
-import {getProductName} from "./utils";
+
 import React from "react";
 import("./ProductRow.scss");
 
-function ProductRow({product, addProductToLoadingQueue, isLoading, setFilter}) {
+function ProductRow({product, isLoading, addProductToLoadingQueue, setFilter}) {
 
-    const title = getProductName(product);
-    const cmsProductId = product.cmsProductId;
-    const productGroup = product.productGroup?.toLowerCase();
-    const algoId = product.e24AlgorithmId !== 0
-        ? product.e24AlgorithmId
-        : "";
-    const price = product.price !== -1
-        ? product.currency + product.price
-        : ""
+    const hasError = !product.deliveryConsistent || product.previewMissing || product.deliveryMissing;
+
+    const errors = <ul className="error-list small">
+        {!product.deliveryConsistent && <li>Delivery inconsistent</li>}
+        {product.previewMissing && <li>Missing from preview</li>}
+        {product.deliveryMissing && <li>Missing from delivery</li>}
+    </ul>
+
 
     return (
-        <tr className={"ProductRow" + (isLoading ? " loading-product" : "")}>
+        <tr className={"ProductRow" + (isLoading ? " loading-product" : "") + (hasError ? " product-error" : "")}>
             <td className="min">
-                <button onClick={() => setFilter(product.productId)}>
-                    {product.productId}
+                <button onClick={() => setFilter(product.sku)}>
+                    {product.sku}
                 </button>
             </td>
-            <td className={product.hidden ? " hidden" : ""}>{title}</td>
+            <td>
+                <div className={product.hidden ? " hidden" : ""}>{product.name}</div>
+                { hasError && errors }
+            </td>
             <td className="min">
-                <button onClick={() => setFilter(cmsProductId)}>
-                    {cmsProductId}
+                <button onClick={() => setFilter(product.cmsProductId)}>
+                    {product.cmsProductId}
+                </button>
+            </td>
+            <td className="min small">
+                <button onClick={() => setFilter(product.productGroup)}>
+                    {product.productGroup}
                 </button>
             </td>
             <td className="min">
-                <button onClick={() => setFilter(productGroup)}>
-                    {productGroup}
+                <button onClick={() => setFilter(product.e24AlgorithmId)}>
+                    {product.e24AlgorithmId}
                 </button>
             </td>
-            <td className="min">
-                <button onClick={() => setFilter(algoId)}>
-                    {algoId}
-                </button>
-            </td>
-            <td className="min">{price}</td>
-                <InStockTd product={product}/>
+            <td className="min right">{product.price}</td>
+            <InStockTd product={product}/>
             <td className="min right">
-                <button onClick={() => addProductToLoadingQueue(product)}>
-                    Update
-                </button>
+                <button onClick={() => addProductToLoadingQueue(product)}>Update</button>
             </td>
         </tr>
-    )
+    );
 }
 
 function InStockTd({product}) {
@@ -60,8 +60,11 @@ function InStockTd({product}) {
 
     return (
         <>
-            <td className={"min in-stock-" + product.inStock}>
+            <td className={"min center in-stock-" + product.inStock}>
                 {product.inStock ? "✓" : "✗"}
+            </td>
+            <td className={"min in-stock-" + product.previewInStock}>
+                {product.previewInStock ? "✓" : "✗"}
             </td>
             <td className="min in-stock-false stock-summary">
                 <ul>

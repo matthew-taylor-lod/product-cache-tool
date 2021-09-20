@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import ProductRow from "./ProductRow";
-import {getProductName, sortingMethods} from "./utils";
+import {getProductData, sortingMethods} from "./utils";
 import("./ProductList.scss");
 
 function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setSortBy}) {
@@ -11,19 +11,45 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
     const [loadingQueueLookup, setLoadingQueueLookup] = useState(new Set());
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const productsUrl = environmentConfig.productsUrl.replace("{tenant}", tenant);
-        axios.get(productsUrl)
-            .then(response => response.data)
-            .then(json => {
-                const pm = {};
-                json.products?.forEach(e => {
-                    pm[e.productId] = e;
-                });
-                setProductMap(pm);
-            })
-            .catch(error => console.log("Error: " + error));
+    const productsCallSuffix = "/blueprint/servlet/eh/{tenant}/api/products";
+    const updateCallSuffix = "/blueprint/servlet/eh/{tenant}/api/productCache/{sku}";
+    const productCallSuffix = "/blueprint/servlet/eh/{tenant}/api/product/{sku}";
 
+    useEffect(() => {
+        const productsCalls = Object.values(environmentConfig.servers).map(server => {
+            const productsUrl = server + productsCallSuffix.replace("{tenant}", tenant);
+            return axios.get(productsUrl);
+        });
+
+        Promise.all(productsCalls).then(responses => {
+            const loadedProducts = {};
+
+            responses.forEach(response => {
+                const hostname = new URL(response.config.url).hostname;
+
+                response.data.products.forEach(productInformation => {
+                    const sku = productInformation.productId;
+
+                    let consolidatedProductInformation = loadedProducts[sku];
+
+                    if (!consolidatedProductInformation) {
+                        loadedProducts[sku] = {};
+                        consolidatedProductInformation = loadedProducts[sku];
+                    }
+
+                    consolidatedProductInformation[hostname] = productInformation;
+                });
+            });
+
+            const pm = {};
+
+            Object.values(loadedProducts).forEach(productInformation => {
+               const product = getProductData(productInformation, environmentConfig, tenant);
+               pm[product.sku] = product;
+            });
+
+            setProductMap(pm);
+        });
     }, [environmentConfig, tenant, setProductMap]);
 
     useEffect(() => {
@@ -33,38 +59,42 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
 
             setLoading(true);
 
-            const updateCalls = environmentConfig.cacheUpdateUrls
-                .map(templateUrl => {
-                    const url = templateUrl.replace("{tenant}", product.tenant).replace("{sku}", product.productId)
-                    return axios.get(url);
-                });
+            const updateCalls = Object.values(environmentConfig.servers).map(server => {
+                const updateUrl = server + updateCallSuffix.replace("{tenant}", tenant).replace("{sku}", product.sku)
+                return axios.get(updateUrl)
+                    .then(response => {
+                        const productUrl = server + productCallSuffix.replace("{tenant}", tenant).replace("{sku}", product.sku)
+                        return axios.get(productUrl);
+                    });
+            });
 
             Promise.all(updateCalls)
                 .then(responses => {
-                    const url = environmentConfig.productUrl.replace("{tenant}", product.tenant).replace("{sku}", product.productId)
-                    axios.get(url)
-                        .then(response => response.data)
-                        .then(json => {
-                            const product = json.products[0];
-                            const productId = product.productId;
 
-                            loadingQueueLookup.delete(productId);
-                            setLoadingQueueLookup(new Set(loadingQueueLookup));
+                    const consolidatedProductInformation = {};
 
-                            productMap[productId] = product;
-                            setProductMap({ ...productMap })
+                    responses.forEach(response => {
+                        const hostname = new URL(response.config.url).hostname;
+                        consolidatedProductInformation[hostname] = response.data.products[0];
+                    });
 
-                            setLoading(false);
-                        });
+                    const product = getProductData(consolidatedProductInformation, environmentConfig, tenant);
+
+                    loadingQueueLookup.delete(product.sku);
+                    setLoadingQueueLookup(new Set(loadingQueueLookup));
+
+                    productMap[product.sku] = product;
+                    setProductMap({ ...productMap })
+
+                    setLoading(false);
                 });
         }
-    }, [environmentConfig, loading, setLoading, loadingQueue, setLoadingQueue, loadingQueueLookup, setLoadingQueueLookup, productMap, setProductMap]);
+    }, [environmentConfig, tenant, loading, setLoading, loadingQueue, setLoadingQueue, loadingQueueLookup, setLoadingQueueLookup, productMap, setProductMap]);
 
     function addProductToLoadingQueue(product) {
-        const productId = product.productId;
-        if (!loadingQueueLookup.has(productId)) {
+        if (!loadingQueueLookup.has(product.sku)) {
 
-            loadingQueueLookup.add(productId)
+            loadingQueueLookup.add(product.sku)
             setLoadingQueueLookup(new Set(loadingQueueLookup));
 
             loadingQueue.push(product);
@@ -78,10 +108,10 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
             .sort(getSortingFunction());
 
         sortedFilteredProducts.forEach(product => {
-            const productId = product.productId;
+            const sku = product.sku;
 
-            if (!loadingQueueLookup.has(productId)) {
-                loadingQueueLookup.add(productId);
+            if (!loadingQueueLookup.has(sku)) {
+                loadingQueueLookup.add(sku);
                 loadingQueue.push(product);
             }
         });
@@ -97,20 +127,10 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
 
         if (filterValues.length === 0) return true;
 
-        const filterableFields = [
-            product.productId,
-            getProductName(product),
-            product.cmsProductId,
-            product.productGroup,
-            product.e24AlgorithmId !== 0 ? product.e24AlgorithmId : ""
-        ];
-
-        const s = filterableFields.join("\n").toUpperCase();
-
         let pass = false;
 
         filterValues.forEach(filterValue => {
-            if (s.includes(filterValue)) {
+            if (product.filterableString.includes(filterValue)) {
                 pass = true;
             }
         });
@@ -131,11 +151,13 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
         .filter(filterFunction)
         .sort(getSortingFunction());
 
-    const productRows = sortedFilteredProducts.map((v) => <ProductRow key={v.productId}
-                                                                      product={v}
-                                                                      addProductToLoadingQueue={addProductToLoadingQueue}
-                                                                      setFilter={setFilter}
-                                                                      isLoading={loadingQueueLookup.has(v.productId)}/>);
+    const productRows = sortedFilteredProducts.map((product) => {
+        return <ProductRow key={product.sku}
+                           product={product}
+                           isLoading={loadingQueueLookup.has(product.sku)}
+                           addProductToLoadingQueue={addProductToLoadingQueue}
+                           setFilter={setFilter}/>
+    });
 
     const showing = productRows.length;
     const total = Object.values(productMap).length;
@@ -174,7 +196,8 @@ function ProductList({tenant, environmentConfig, filter, setFilter, sortBy, setS
                         <th className="min">Group</th>
                         <th className="min">Algo</th>
                         <th className="min">Price</th>
-                        <th colSpan={2} className="min">In Stock</th>
+                        <th colSpan={1} className="min">In Stock</th>
+                        <th colSpan={2} className="min">Preview</th>
                         <th className="min"><button onClick={() => updateAll()}>Update All</button></th>
                     </tr>
                     </thead>

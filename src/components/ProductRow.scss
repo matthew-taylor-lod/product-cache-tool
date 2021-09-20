@@ -3,7 +3,15 @@
 .ProductRow {
     .hidden {
         font-weight: lighter;
-        font-style: italic;
+        color: $har-dark-grey;
+
+        &::before {
+            content: "-- hidden: ";
+        }
+    }
+
+    &.product-error {
+        background: $exception-red !important;
     }
 
     &.loading-product {
@@ -12,12 +20,31 @@
 
     .in-stock-true {
         color: $har-medium-green;
-        font-weight: bolder;
+        font-weight: bold;
     }
 
     .in-stock-false {
         color: $har-pain-red;
+        font-weight: bold;
+    }
+
+    .in-stock-missing {
+        color: $har-white;
         font-weight: bolder;
+    }
+
+    .error-list {
+        * {
+            all: unset;
+            display: inline-block;
+            font-size: smaller;
+            font-weight: bolder;
+        }
+        li {
+            padding: 0 10px;
+        }
+        margin:0;
+        padding-left: 0 !important;
     }
 
     .stock-summary {

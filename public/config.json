@@ -6,48 +6,51 @@
   "environments": [
     {
       "name": "preprod",
+      "hidden": false,
       "tenants": [
         "uk",
         "ls",
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-preprod-del-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-preprod-del-01:49080/blueprint/servlet/eh/{tenant}/api/products",
-      "cacheUpdateUrls": [
-        "http://dt-preprod-del-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-preprod-del-02:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-preprod-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      "previewHostname": "dt-preprod-man-01",
+      "deliveryServers": 2,
+      "servers": [
+        "http://dt-preprod-man-01:40080",
+        "http://dt-preprod-del-01:49080",
+        "http://dt-preprod-del-02:49080"
       ]
     },
     {
       "name": "black",
+      "hidden": false,
       "tenants": [
         "uk",
         "ls",
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-preprod-del-03:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-preprod-del-03:49080/blueprint/servlet/eh/{tenant}/api/products",
-      "cacheUpdateUrls": [
-        "http://dt-preprod-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-preprod-del-03:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      "previewHostname": "dt-preprod-man-01",
+      "deliveryServers": 1,
+      "servers": [
+        "http://dt-preprod-man-01:40080",
+        "http://dt-preprod-del-03:49080"
       ]
     },
     {
       "name": "dev",
+      "hidden": false,
       "tenants": [
         "uk",
         "ls",
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/products",
-      "cacheUpdateUrls": [
-        "http://dt-delivery-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-management-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      "previewHostname": "dt-management-01",
+      "deliveryServers": 1,
+      "servers": [
+        "http://dt-management-01:40080",
+        "http://dt-delivery-01:49080"
       ]
     },
     {
@@ -58,11 +61,11 @@
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-dev2-del-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-dev2-del-01:49080/blueprint/servlet/eh/{tenant}/api/products",
-      "cacheUpdateUrls": [
-        "http://dt-dev2-mgmt-01:40080/blueprint/servlet/eh/{tenant/api/productCache/{sku}",
-        "http://dt-dev2-del-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      "previewHostname": "dt-management-02",
+      "deliveryServers": 1,
+      "servers": [
+        "http://dt-management-02:40080",
+        "http://dt-dev2-del-01:49080"
       ]
     },
     {
@@ -74,11 +77,11 @@
         "ns",
         "ie"
       ],
-      "productUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/products",
-      "cacheUpdateUrls": [
-        "http://localhost:40081/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
-      ]
+      "servers": {
+        "http://localhost:40081": {
+          "name": "management"
+        }
+      }
     },
     {
       "name": "live",

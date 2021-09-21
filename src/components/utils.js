@@ -1,26 +1,26 @@
 export function getProductData(consolidatedProductInformation, environmentConfiguration, tenant) {
 
     // get the preview data and remove it from the map
-    const previewData = consolidatedProductInformation[environmentConfiguration.previewHostname];
-    const deliveryData = Object.values(consolidatedProductInformation).filter(e => e !== previewData);
+    const previewProductInformation = consolidatedProductInformation[environmentConfiguration.previewHostname];
+    const deliveryData = Object.values(consolidatedProductInformation).filter(e => e !== previewProductInformation);
 
-    let productInformation = previewData;
+    let productInformation = previewProductInformation;
     let deliveryInconsistent = false;
 
     if (deliveryData.length > 0) {
         productInformation = Object.values(deliveryData)[0];
-        deliveryInconsistent &= deliveryData.every(productCacheEntry => flatMapEqual(productCacheEntry, productInformation));
+        deliveryInconsistent &= deliveryData.every(productCacheEntry => flatMapEqual(productCacheEntry, productInformation, (noOp => noOp)));
     }
 
     const product = {};
     product["tenant"] = tenant;
-    product["deliveryMissing"] = (deliveryData.length !== environmentConfiguration.deliveryServers) || !productInformation["cmsProductId"];
-    product["deliveryConsistent"] = !deliveryInconsistent;
+    product["sku"] = productInformation["productId"] || previewProductInformation["sku"];
 
-    product["sku"] = productInformation["productId"] || previewData["sku"];
+    // data from the delivery product information
     product["name"] = productInformation.productTitle
         ? productInformation.productTitle
         : productInformation.dosageTitle + " " + productInformation.productLabel;
+
     product["hidden"] = productInformation.hidden;
     product["cmsProductId"] = productInformation.cmsProductId;
     product["productGroup"] = productInformation.productGroup?.toLowerCase();
@@ -35,18 +35,26 @@ export function getProductData(consolidatedProductInformation, environmentConfig
 
     product["inStock"] = productInformation.inStock;
 
-    if (previewData && previewData["cmsProductId"]) {
-        product["previewInStock"] = previewData.inStock;
-        product["adminOutOfStock"] = previewData.adminOutOfStock;
-        product["cmsProxyAlgoOutOfStock"] = previewData.cmsProxyAlgoOutOfStock;
-        product["cmsProductOutOfStock"] = previewData.cmsProductOutOfStock;
-        product["cmsProductDosageOutOfStock"] = previewData.cmsProductDosageOutOfStock;
-        product["cmsProductProxyOutOfStock"] = previewData.cmsProductProxyOutOfStock;
+    // get the preview data
+    if (previewProductInformation && previewProductInformation["cmsProductId"]) {
+        product["previewInStock"] = previewProductInformation.inStock;
+        product["adminOutOfStock"] = previewProductInformation.adminOutOfStock;
+        product["cmsProxyAlgoOutOfStock"] = previewProductInformation.cmsProxyAlgoOutOfStock;
+        product["cmsProductOutOfStock"] = previewProductInformation.cmsProductOutOfStock;
+        product["cmsProductDosageOutOfStock"] = previewProductInformation.cmsProductDosageOutOfStock;
+        product["cmsProductProxyOutOfStock"] = previewProductInformation.cmsProductProxyOutOfStock;
+
+        product["unpublishedChanges"] = !flatMapEqual(productInformation, previewProductInformation,
+            (v => String(v).replace(/\/blueprint\/servlet/, "")));
     }
     else {
         product["previewMissing"] = true;
         product["previewInStock"] = product["inStock"];
     }
+
+    // flags
+    product["deliveryMissing"] = (deliveryData.length !== environmentConfiguration.deliveryServers) || !productInformation["cmsProductId"];
+    product["deliveryConsistent"] = !deliveryInconsistent;
 
     // get filterable data
     const filterableFields = [
@@ -62,7 +70,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
     return product;
 }
 
-export function flatMapEqual(entry1, entry2) {
+export function flatMapEqual(entry1, entry2, valueFunction) {
     const keys1 = Object.keys(entry1);
     const keys2 = Object.keys(entry2);
 
@@ -71,7 +79,7 @@ export function flatMapEqual(entry1, entry2) {
     }
 
     for (let key of keys1) {
-        if (entry1[key] !== entry2[key]) {
+        if (valueFunction(entry1[key]) !== valueFunction(entry2[key])) {
             return false;
         }
     }

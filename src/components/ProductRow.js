@@ -4,17 +4,24 @@ import("./ProductRow.scss");
 
 function ProductRow({product, isLoading, addProductToLoadingQueue, setFilter}) {
 
-    const hasError = !product.deliveryConsistent || product.previewMissing || product.deliveryMissing;
+    const hasMessage = !product.deliveryConsistent || product.previewMissing || product.deliveryMissing || product.unpublishedChanges;
 
     const errors = <ul className="error-list small">
         {!product.deliveryConsistent && <li>Delivery inconsistent</li>}
         {product.previewMissing && <li>Missing from preview</li>}
         {product.deliveryMissing && <li>Missing from delivery</li>}
+        {product.unpublishedChanges && <li>Unpublished changes</li>}
     </ul>
 
+    function getMainClassName() {
+        return "ProductRow"
+            + (isLoading ? " loading-product" : "")
+            + (!product.deliveryConsistent ? " product-error" : "")
+            + ((product.previewMissing || product.deliveryMissing || product.unpublishedChanges) ? " product-unpublished" : "");
+    }
 
     return (
-        <tr className={"ProductRow" + (isLoading ? " loading-product" : "") + (hasError ? " product-error" : "")}>
+        <tr className={getMainClassName()}>
             <td className="min">
                 <button onClick={() => setFilter(product.sku)}>
                     {product.sku}
@@ -22,7 +29,7 @@ function ProductRow({product, isLoading, addProductToLoadingQueue, setFilter}) {
             </td>
             <td>
                 <div className={product.hidden ? " hidden" : ""}>{product.name}</div>
-                { hasError && errors }
+                { hasMessage && errors }
             </td>
             <td className="min">
                 <button onClick={() => setFilter(product.cmsProductId)}>

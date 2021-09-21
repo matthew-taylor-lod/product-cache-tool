@@ -8,14 +8,23 @@
         &::before {
             content: "-- hidden: ";
         }
+
+        &::after {
+            content: " --";
+        }
     }
 
     &.product-error {
         background: $exception-red !important;
+        font-weight: bold !important;
+    }
+
+    &.product-unpublished {
+        background: $warning-yellow !important;
     }
 
     &.loading-product {
-        background: $warning-yellow !important;
+        opacity: 0.35 !important;
     }
 
     .in-stock-true {

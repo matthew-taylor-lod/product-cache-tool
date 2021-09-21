@@ -69,21 +69,6 @@
       ]
     },
     {
-      "name": "localhost",
-      "hidden": true,
-      "tenants": [
-        "uk",
-        "ls",
-        "ns",
-        "ie"
-      ],
-      "servers": {
-        "http://localhost:40081": {
-          "name": "management"
-        }
-      }
-    },
-    {
       "name": "live",
       "hidden": true,
       "tenants": [
@@ -92,12 +77,12 @@
         "ns",
         "ie"
       ],
-      "productUrl": "http://dt-live-del-01:49080/blueprint/servlet/eh/{tenant}/api/product/{sku}",
-      "productsUrl": "http://dt-live-del-01:49080/blueprint/servlet/eh/{tenant}/api/products",
-      "cacheUpdateUrls": [
-        "http://dt-live-del-01:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-live-del-02:49080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}",
-        "http://dt-live-man-01:40080/blueprint/servlet/eh/{tenant}/api/productCache/{sku}"
+      "previewHostname": "dt-live-man-01",
+      "deliveryServers": 2,
+      "servers": [
+        "http://dt-live-man-01:40080",
+        "http://dt-live-del-01:49080",
+        "http://dt-live-del-02:49080"
       ]
     }
   ],

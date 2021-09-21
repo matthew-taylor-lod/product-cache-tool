@@ -9,7 +9,11 @@ export function getProductData(consolidatedProductInformation, environmentConfig
 
     if (deliveryData.length > 0) {
         productInformation = Object.values(deliveryData)[0];
-        deliveryInconsistent &= deliveryData.every(productCacheEntry => flatMapEqual(productCacheEntry, productInformation, (noOp => noOp)));
+        deliveryInconsistent = !deliveryData.every(productCacheEntry => flatMapEqual(productCacheEntry, productInformation, (noOp => noOp)));
+    }
+
+    if (previewProductInformation && previewProductInformation.productId === 3819) {
+        console.log(Object.values(deliveryData)[0], Object.values(deliveryData)[1]);
     }
 
     const product = {};
@@ -54,7 +58,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
 
     // flags
     product["deliveryMissing"] = (deliveryData.length !== environmentConfiguration.deliveryServers) || !productInformation["cmsProductId"];
-    product["deliveryConsistent"] = !deliveryInconsistent;
+    product["deliveryInconsistent"] = deliveryInconsistent;
 
     // get filterable data
     const filterableFields = [
@@ -62,7 +66,10 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         product.name,
         product.cmsProductId,
         product.productGroup,
-        product.e24AlgorithmId
+        product.e24AlgorithmId,
+        (product.hidden) ? "hidden" : "",
+        (product.deliveryInconsistent) ? "!delivery-inconsistent": "",
+        (product.unpublishedChanges) ? "!unpublished-changes": ""
     ];
 
     product["filterableString"] = filterableFields.join("\n").toUpperCase();

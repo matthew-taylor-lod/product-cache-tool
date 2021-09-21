@@ -14,13 +14,13 @@
         }
     }
 
+    &.product-unpublished {
+        background: $warning-yellow !important;
+    }
+
     &.product-error {
         background: $exception-red !important;
         font-weight: bold !important;
-    }
-
-    &.product-unpublished {
-        background: $warning-yellow !important;
     }
 
     &.loading-product {

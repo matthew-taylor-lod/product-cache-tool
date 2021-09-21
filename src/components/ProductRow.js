@@ -4,10 +4,10 @@ import("./ProductRow.scss");
 
 function ProductRow({product, isLoading, addProductToLoadingQueue, setFilter}) {
 
-    const hasMessage = !product.deliveryConsistent || product.previewMissing || product.deliveryMissing || product.unpublishedChanges;
+    const hasMessage = product.deliveryInconsistent || product.previewMissing || product.deliveryMissing || product.unpublishedChanges;
 
     const errors = <ul className="error-list small">
-        {!product.deliveryConsistent && <li>Delivery inconsistent</li>}
+        {product.deliveryInconsistent && <li>Delivery inconsistent</li>}
         {product.previewMissing && <li>Missing from preview</li>}
         {product.deliveryMissing && <li>Missing from delivery</li>}
         {product.unpublishedChanges && <li>Unpublished changes</li>}
@@ -16,7 +16,7 @@ function ProductRow({product, isLoading, addProductToLoadingQueue, setFilter}) {
     function getMainClassName() {
         return "ProductRow"
             + (isLoading ? " loading-product" : "")
-            + (!product.deliveryConsistent ? " product-error" : "")
+            + (product.deliveryInconsistent ? " product-error" : "")
             + ((product.previewMissing || product.deliveryMissing || product.unpublishedChanges) ? " product-unpublished" : "");
     }
 

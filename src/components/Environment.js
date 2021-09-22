@@ -1,9 +1,9 @@
-import ProductList from "./ProductList";
 import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import Tenant from "./Tenant";
 
-function Environment({environmentConfig, tenantDetails, selectedTenant, setSelectedTenant, filter, setFilter, sortBy, setSortBy}) {
+function Environment({environmentConfig, tenantDetails, selectedTenant, setSelectedTenant, sku, setSku, filter, setFilter, sortBy, setSortBy}) {
 
     const tabs = environmentConfig.tenants.map(tenant =>
         <Tab key={tenant}>
@@ -12,13 +12,14 @@ function Environment({environmentConfig, tenantDetails, selectedTenant, setSelec
     );
     const tabPanels = environmentConfig.tenants.map(tenant =>
         <TabPanel key={tenant}>
-            <ProductList tenant={selectedTenant}
-                         environmentConfig={environmentConfig}
-                         filter={filter}
-                         setFilter={setFilter}
-                         sortBy={sortBy}
-                         setSortBy={setSortBy}
-            />
+            <Tenant tenant={tenant}
+                    environmentConfig={environmentConfig}
+                    sku={sku}
+                    setSku={setSku}
+                    filter={filter}
+                    setFilter={setFilter}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}/>
         </TabPanel>
     );
 

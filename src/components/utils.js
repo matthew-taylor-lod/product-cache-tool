@@ -12,10 +12,6 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         deliveryInconsistent = !deliveryData.every(productCacheEntry => flatMapEqual(productCacheEntry, productInformation, (noOp => noOp)));
     }
 
-    if (previewProductInformation && previewProductInformation.productId === 3819) {
-        console.log(Object.values(deliveryData)[0], Object.values(deliveryData)[1]);
-    }
-
     const product = {};
     product["tenant"] = tenant;
     product["sku"] = productInformation["productId"] || previewProductInformation["sku"];
@@ -68,8 +64,12 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         product.productGroup,
         product.e24AlgorithmId,
         (product.hidden) ? "hidden" : "",
-        (product.deliveryInconsistent) ? "!delivery-inconsistent": "",
-        (product.unpublishedChanges) ? "!unpublished-changes": ""
+        (product.unpublishedChanges) ? "!unpublished-changes" : "",
+        (product.previewMissing) ? "!preview-missing" : "",
+        (product.deliveryMissing) ? "!delivery-missing" : "",
+        (product.deliveryInconsistent) ? "!delivery-inconsistent" : "",
+
+
     ];
 
     product["filterableString"] = filterableFields.join("\n").toUpperCase();

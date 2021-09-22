@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from "react";
 import Environment from "./components/Environment";
 import {useQueryParam} from "use-query-params";
-import {StringParam} from "serialize-query-params";
+import {NumberParam, StringParam} from "serialize-query-params";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
     const [selectedTenant, setSelectedTenant] = useQueryParam("tenant", StringParam);
     const [selectedEnvironment, setSelectedEnvironment] = useQueryParam("env", StringParam);
 
+    const [sku, setSku] = useQueryParam("sku", NumberParam)
     const [sortBy, setSortBy] = useQueryParam("sortBy", StringParam);
     const [filter, setFilter] = useQueryParam("filter", StringParam);
 
@@ -55,6 +56,8 @@ function App() {
                 tenantDetails={config.tenants}
                 selectedTenant={selectedTenant}
                 setSelectedTenant={setSelectedTenant}
+                sku={sku}
+                setSku={setSku}
                 filter={filter}
                 setFilter={setFilter}
                 sortBy={sortBy}
@@ -69,10 +72,11 @@ function App() {
     return (
         <>
             <div className="top" onClick={() =>{
-                setSelectedEnvironment("");
-                setSelectedTenant("");
-                setFilter("");
-                setSortBy("");
+                setSelectedEnvironment(undefined);
+                setSelectedTenant(undefined);
+                setSku(undefined);
+                setFilter(undefined);
+                setSortBy(undefined);
             }}>
                 <div className="App">
                     <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo"/>

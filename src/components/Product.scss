@@ -1,0 +1,61 @@
+@import "src/palette";
+
+.Product {
+    h1 {
+        display: inline-block;
+    }
+
+    button {
+        display: inline-block;
+        background: #29873c;
+        color: #fff;
+        border: 1px solid #1a1a1a;
+        border-radius: 5px;
+        padding: 1px 10px;
+        cursor: pointer;
+        margin-left: 10px;
+
+        &:hover {
+            color: #fff;
+            background: $har-dark-green;
+            text-decoration: none;
+        }
+    }
+
+    table.product-information {
+        text-align: center;
+
+        th {
+            text-align: center;
+        }
+
+        td:first-child, th:first-child {
+            font-weight: bold;
+            text-align: right;
+            border-right: thin solid $har-medium-grey !important;
+        }
+
+        tr.inconsistent {
+            background: $exception-red;
+        }
+
+        .in-stock-true {
+            font-size: large;
+            color: $har-medium-green;
+            font-weight: bold;
+        }
+
+        .in-stock-false {
+            font-size: large;
+            color: $har-pain-red;
+            font-weight: bold;
+        }
+
+        img.thumbnail {
+            box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+            height: 100px;
+            margin-top: 11px;
+            margin-bottom: 7px;
+        }
+    }
+}

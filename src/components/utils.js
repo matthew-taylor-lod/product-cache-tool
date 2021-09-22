@@ -101,7 +101,11 @@ export const sortingMethods = {
     },
     name: {
         name: "name",
-        sort:(a, b) => a.name.localeCompare(b.name)
+        sort: (a, b) => a.name.localeCompare(b.name)
+    },
+    v_name: {
+        name: "v_name",
+        sort: (a, b) => (a.hidden - b.hidden) || a.name.localeCompare(b.name)
     }
 };
 

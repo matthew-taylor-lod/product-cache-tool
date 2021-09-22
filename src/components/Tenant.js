@@ -55,7 +55,7 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
     useEffect(() => {
         if (!loading && loadingQueue.length > 0) {
             const product = loadingQueue.shift();
-            setLoadingQueue( [ ...loadingQueue ]);
+            setLoadingQueue([...loadingQueue]);
 
             setLoading(true);
 
@@ -68,26 +68,24 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
                     });
             });
 
-            Promise.all(updateCalls)
-                .then(responses => {
+            Promise.all(updateCalls).then(responses => {
+                const consolidatedProductInformation = {};
 
-                    const consolidatedProductInformation = {};
+                responses.forEach(response => {
+                    const hostname = new URL(response.config.url).hostname;
+                    consolidatedProductInformation[hostname] = response.data.products[0];
+                });
 
-                    responses.forEach(response => {
-                        const hostname = new URL(response.config.url).hostname;
-                        consolidatedProductInformation[hostname] = response.data.products[0];
-                    });
+                const product = getProductData(consolidatedProductInformation, environmentConfig, tenant);
 
-                    const product = getProductData(consolidatedProductInformation, environmentConfig, tenant);
+                loadingQueueLookup.delete(product.sku);
+                setLoadingQueueLookup(new Set(loadingQueueLookup));
 
-                    loadingQueueLookup.delete(product.sku);
-                    setLoadingQueueLookup(new Set(loadingQueueLookup));
-
-                    productMap[product.sku] = product;
-                    setProductMap({ ...productMap })
+                productMap[product.sku] = product;
+                setProductMap({...productMap})
 
                     setLoading(false);
-                });
+            });
         }
     }, [environmentConfig, tenant, loading, setLoading, loadingQueue, setLoadingQueue, loadingQueueLookup, setLoadingQueueLookup, productMap, setProductMap]);
 
@@ -96,7 +94,6 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
             if (!loadingQueueLookup.has(product.sku)) {
                 loadingQueueLookup.add(product.sku);
                 loadingQueue.push(product);
-
             }
         });
         setLoadingQueue([...loadingQueue]);

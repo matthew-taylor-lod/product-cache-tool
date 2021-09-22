@@ -74,6 +74,8 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
                 </div>
                 <div className="sort-by">
                     <span>Sort by </span>
+                    <button className={isSortBySelected("v_name")} onClick={() => setSortBy("v_name")}>Name, visible first</button>
+                    <span> / </span>
                     <button className={isSortBySelected("name")} onClick={() => setSortBy("name")}>Name</button>
                     <span> / </span>
                     <button className={isSortBySelected("sku")} onClick={() => setSortBy("sku")}>SKU</button>

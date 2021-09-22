@@ -2,7 +2,7 @@
 import React from "react";
 import("./ProductRow.scss");
 
-function ProductRow({product, isLoading, addProductToLoadingQueue, setSku, setFilter}) {
+function ProductRow({product, isLoading, addProductsToLoadingQueue, setSku, setFilter}) {
 
     const hasMessage = product.deliveryInconsistent || product.previewMissing || product.deliveryMissing || product.unpublishedChanges;
 
@@ -49,7 +49,7 @@ function ProductRow({product, isLoading, addProductToLoadingQueue, setSku, setFi
             <td className="min right">{product.price}</td>
             <InStockTd product={product}/>
             <td className="min right">
-                <button onClick={() => addProductToLoadingQueue(product)}>Update</button>
+                <button onClick={() => addProductsToLoadingQueue([product])}>Update</button>
             </td>
         </tr>
     );

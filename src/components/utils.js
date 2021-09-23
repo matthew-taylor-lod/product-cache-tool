@@ -45,7 +45,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         product["cmsProductProxyOutOfStock"] = previewProductInformation.cmsProductProxyOutOfStock;
 
         product["unpublishedChanges"] = !flatMapEqual(productInformation, previewProductInformation,
-            (v => String(v).replace(/\/blueprint\/servlet/, "")));
+            (v => String(v).replace(/\/blueprint\/servlet/, ""))) && !deliveryInconsistent;
     }
     else {
         product["previewMissing"] = true;
@@ -68,8 +68,6 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         (product.previewMissing) ? "!preview-missing" : "",
         (product.deliveryMissing) ? "!delivery-missing" : "",
         (product.deliveryInconsistent) ? "!delivery-inconsistent" : "",
-
-
     ];
 
     product["filterableString"] = filterableFields.join("\n").toUpperCase();

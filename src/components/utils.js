@@ -33,6 +33,8 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         ? productInformation.currency + Number(productInformation.price).toFixed(2)
         : ""
 
+    product["imageMissing"] = !productInformation.imageURL;
+
     product["inStock"] = productInformation.inStock;
 
 
@@ -69,6 +71,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         (product.previewMissing) ? "!preview-missing" : "",
         (product.deliveryMissing) ? "!delivery-missing" : "",
         (product.deliveryInconsistent) ? "!delivery-inconsistent" : "",
+        (product.imageMissing) ? "!image-missing" : "",
     ];
 
     product["filterableString"] = filterableFields.join("\n").toUpperCase();

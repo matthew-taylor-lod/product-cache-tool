@@ -35,6 +35,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
 
     product["inStock"] = productInformation.inStock;
 
+
     // get the preview data
     if (previewProductInformation && previewProductInformation["cmsProductId"]) {
         product["previewInStock"] = previewProductInformation.inStock;

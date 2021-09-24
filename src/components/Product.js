@@ -12,7 +12,7 @@ function Product({environmentConfig, tenant, sku, setSku}) {
 
         const productCalls = Object.values(environmentConfig.servers).map(server => {
             const productsUrl = server + productCallSuffix.replace("{tenant}", tenant).replace("{sku}", sku);
-            return axios.get(productsUrl);
+            return axios.get(productsUrl,{crossdomain: true});
         });
 
         Promise.all(productCalls).then(responses => {

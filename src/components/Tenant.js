@@ -18,7 +18,7 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
     useEffect(() => {
         const productsCalls = Object.values(environmentConfig.servers).map(server => {
             const productsUrl = server + productsCallSuffix.replace("{tenant}", tenant);
-            return axios.get(productsUrl);
+            return axios.get(productsUrl, {crossdomain: true});
         });
 
         Promise.all(productsCalls).then(responses => {
@@ -61,10 +61,10 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
 
             const updateCalls = Object.values(environmentConfig.servers).map(server => {
                 const updateUrl = server + updateCallSuffix.replace("{tenant}", tenant).replace("{sku}", product.sku)
-                return axios.get(updateUrl)
+                return axios.get(updateUrl,{crossdomain: true})
                     .then(response => {
                         const productUrl = server + productCallSuffix.replace("{tenant}", tenant).replace("{sku}", product.sku)
-                        return axios.get(productUrl);
+                        return axios.get(productUrl, {crossdomain: true});
                     });
             });
 

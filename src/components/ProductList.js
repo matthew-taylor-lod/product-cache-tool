@@ -9,7 +9,9 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
             .filter(filterFunction)
             .sort(getSortingFunction());
 
-        addProductsToLoadingQueue(sortedFilteredProducts);
+        const skus = sortedFilteredProducts.map(e => e.sku);
+
+        addProductsToLoadingQueue(skus);
     }
 
     function filterFunction(product) {
@@ -79,6 +81,9 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
                     <button className={isSortBySelected("name")} onClick={() => setSortBy("name")}>Name</button>
                     <span> / </span>
                     <button className={isSortBySelected("sku")} onClick={() => setSortBy("sku")}>SKU</button>
+                </div>
+                <div className="bulk-update">
+                    Bulk Update
                 </div>
             </div>
 

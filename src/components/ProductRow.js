@@ -55,7 +55,7 @@ function ProductRow({product, isLoading, addProductsToLoadingQueue, setSku, setF
             <td className="min right">{product.price}</td>
             <InStockTd product={product}/>
             <td className="min right">
-                <button onClick={() => addProductsToLoadingQueue([product])}>Update</button>
+                <button onClick={() => addProductsToLoadingQueue([product.sku])}>Update</button>
             </td>
         </tr>
     );

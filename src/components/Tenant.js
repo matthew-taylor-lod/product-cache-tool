@@ -72,8 +72,12 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
                 const consolidatedProductInformation = {};
 
                 responses.forEach(response => {
-                    const hostname = new URL(response.config.url).hostname;
-                    consolidatedProductInformation[hostname] = response.data.products[0];
+                    const url = new URL(response.config.url);
+                    const hostname = url.hostname;
+                    const splitUrl = url.href.split("/");
+                    const sku = splitUrl.pop();
+
+                    consolidatedProductInformation[hostname] = response.data.products[0] || {productId: sku};
                 });
 
                 const product = getProductData(consolidatedProductInformation, environmentConfig, tenant);
@@ -81,23 +85,47 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
                 loadingQueueLookup.delete(product.sku);
                 setLoadingQueueLookup(new Set(loadingQueueLookup));
 
-                productMap[product.sku] = product;
+                // update product or delete from the productMap if it doesn't exist
+                if (product.previewMissing && product.deliveryMissing) {
+                    delete productMap[product.sku];
+                }
+                else {
+                    productMap[product.sku] = product;
+                }
                 setProductMap({...productMap})
 
-                    setLoading(false);
+                setLoading(false);
             });
         }
     }, [environmentConfig, tenant, loading, setLoading, loadingQueue, setLoadingQueue, loadingQueueLookup, setLoadingQueueLookup, productMap, setProductMap]);
 
-    function addProductsToLoadingQueue(products) {
-        products.forEach(product => {
-            if (!loadingQueueLookup.has(product.sku)) {
-                loadingQueueLookup.add(product.sku);
+    function addProductsToLoadingQueue(skus) {
+        let productAdded = false;
+
+        skus.forEach(sku => {
+            if (!loadingQueueLookup.has(sku)) {
+                loadingQueueLookup.add(sku);
+
+                let product = productMap[sku];
+
+                if (!product) {
+                    product = {};
+                    product.sku = sku;
+                    product.name = String(sku);
+                    product.hidden = false;
+                    productMap[sku] = product;
+                    productAdded = true;
+                }
+
                 loadingQueue.push(product);
             }
         });
         setLoadingQueue([...loadingQueue]);
         setLoadingQueueLookup(new Set(loadingQueueLookup));
+
+        if (productAdded) {
+            setProductMap({...productMap});
+        }
     }
 
     return (

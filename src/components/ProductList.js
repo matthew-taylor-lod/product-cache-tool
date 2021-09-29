@@ -1,5 +1,6 @@
 import ProductRow from "./ProductRow";
 import {sortingMethods} from "./utils";
+import BulkUpdate from "./BulkUpdate";
 import("./ProductList.scss");
 
 function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue, sku, setSku, filter, setFilter, sortBy, setSortBy}) {
@@ -16,6 +17,7 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
 
     function filterFunction(product) {
         if (!filter) return true;
+        if (loadingQueueLookup.has(product.sku)) return true;
 
         const filterValues = filter.split(",").map(e => e.trim().toUpperCase()).filter(e => e.length > 0);
 
@@ -82,9 +84,7 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
                     <span> / </span>
                     <button className={isSortBySelected("sku")} onClick={() => setSortBy("sku")}>SKU</button>
                 </div>
-                <div className="bulk-update">
-                    Bulk Update
-                </div>
+                <BulkUpdate addProductsToLoadingQueue={addProductsToLoadingQueue}/>
             </div>
 
             {productRows.length > 0 &&

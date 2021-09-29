@@ -6,6 +6,9 @@ import {useQueryParam} from "use-query-params";
 import {NumberParam, StringParam} from "serialize-query-params";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
+
 function App() {
     const [config, setConfig] = useState(null);
     const [selectedTenant, setSelectedTenant] = useQueryParam("tenant", StringParam);

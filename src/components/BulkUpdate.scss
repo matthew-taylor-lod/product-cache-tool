@@ -1,0 +1,58 @@
+@import "src/palette";
+
+.BulkUpdate {
+}
+
+.BulkUpdateModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: white;
+
+    border: 1px solid black;
+
+    width: 610px;
+    padding: 20px;
+
+    .header {
+        display: flex;
+
+        .push {
+            margin-left: auto;
+        }
+
+        button {
+            &:not(:last-child) {
+                margin-right: 20px;
+            }
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+            background: $har-medium-green;
+            color: $har-white;
+            border: 1px solid $har-charcoal;
+            border-radius: 5px;
+            padding: 1px 10px;
+            cursor: pointer;
+
+            &:hover {
+                background: $har-dark-green;
+            }
+        }
+    }
+
+    p {
+        margin-top: 0;
+    }
+
+    textarea {
+        width: 600px;
+        height: 250px;
+        padding: 5px;
+        resize: none;
+    }
+}

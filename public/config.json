@@ -61,10 +61,10 @@
         "ns",
         "ie"
       ],
-      "previewHostname": "dt-management-02",
+      "previewHostname": "dt-dev2-mgmt-01",
       "deliveryServers": 1,
       "servers": [
-        "http://dt-management-02:40080",
+        "http://dt-dev2-mgmt-01:40080",
         "http://dt-dev2-del-01:49080"
       ]
     },

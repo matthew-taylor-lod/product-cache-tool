@@ -26,7 +26,7 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
         let pass = false;
 
         filterValues.forEach(filterValue => {
-            if (product.filterableString.includes(filterValue)) {
+            if (product.filterableString && product.filterableString.includes(filterValue)) {
                 pass = true;
             }
         });

@@ -41,7 +41,7 @@ function Product({environmentConfig, tenant, sku, setSku}) {
 
         const valueRows = productCacheEntries.map(e => {
             const rawValue = e.data[key];
-            const value = String(rawValue);
+            const value = rawValue ? String(rawValue) : rawValue;
 
             if (key.includes("Stock")) {
                 return <td key={e.hostname} className={"in-stock-" + value}>
@@ -49,10 +49,13 @@ function Product({environmentConfig, tenant, sku, setSku}) {
                 </td>
             }
 
-            if (key === "imageURL") {
+            if (key === "imageURL" && value) {
                 const url = e.origin + (value.startsWith("/blueprint/servlet") ? value : "/blueprint/servlet" + value);
+                const fileName = value.split("/").pop();
+                const id = value.match(/image\/(\d+)\//);
                 return <td key={e.hostname}>
                     <img className="thumbnail" src={url} title={value} alt={value} />
+                    <div className="file-name">{id}/{fileName}</div>
                 </td>
             }
             else {
@@ -68,8 +71,11 @@ function Product({environmentConfig, tenant, sku, setSku}) {
         )
     }
 
-    const headerRow = productCacheEntries?.map((e, i) =>
-        <th key={i}>{e.hostname}</th>);
+    const headerRow = productCacheEntries?.map((e, i) => {
+        const hostname = e.hostname;
+        const name = (hostname === environmentConfig.previewHostname) ? "Preview" : hostname;
+        return <th key={i}>{name}</th>;
+    });
 
     const rowKeys = [
         //'productId',

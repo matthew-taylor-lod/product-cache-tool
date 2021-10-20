@@ -93,7 +93,7 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
                         <tr>
                             <th className="min">SKU</th>
                             <th>Name</th>
-                            <th className="min">Product</th>
+                            <th className="min">CMS Product</th>
                             <th className="min">Group</th>
                             <th className="min">Algo</th>
                             <th className="min">Price</th>

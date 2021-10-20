@@ -85,7 +85,7 @@
     },
     {
       "name": "live",
-      "hidden": true,
+      "hidden": false,
       "tenants": [
         "uk",
         "ls",

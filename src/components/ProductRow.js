@@ -12,9 +12,9 @@ function ProductRow({product, isLoading, addProductsToLoadingQueue, setSku, setF
         product.imageMissing);
 
     const errors = <ul className="error-list small">
-        {product.deliveryInconsistent && <li>Delivery inconsistent</li>}
-        {product.previewMissing && <li>Missing from preview</li>}
-        {product.deliveryMissing && <li>Missing from delivery</li>}
+        {product.deliveryInconsistent && <li>Inconsistent</li>}
+        {product.previewMissing && <li>Missing from Preview</li>}
+        {product.deliveryMissing && <li>Missing from Live</li>}
         {product.imageMissing && <li>Image missing</li>}
         {product.unpublishedChanges && <li>Unpublished changes</li>}
     </ul>

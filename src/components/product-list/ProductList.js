@@ -1,6 +1,7 @@
-import ProductRow from "./ProductRow";
-import {sortingMethods} from "./utils";
+import ProductListRow from "./ProductListRow";
+import {sortingMethods} from "../utils";
 import BulkUpdate from "./BulkUpdate";
+import React from "react";
 import("./ProductList.scss");
 
 function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue, sku, setSku, filter, setFilter, sortBy, setSortBy}) {
@@ -47,16 +48,16 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
         .filter(filterFunction)
         .sort(getSortingFunction());
 
-    const productRows = sortedFilteredProducts.map((product) => {
-        return <ProductRow key={product.sku}
-                           product={product}
-                           isLoading={loadingQueueLookup.has(product.sku)}
-                           addProductsToLoadingQueue={addProductsToLoadingQueue}
-                           setSku={setSku}
-                           setFilter={setFilter}/>
+    const productListRows = sortedFilteredProducts.map((product) => {
+        return <ProductListRow key={product.sku}
+                               product={product}
+                               isLoading={loadingQueueLookup.has(product.sku)}
+                               addProductsToLoadingQueue={addProductsToLoadingQueue}
+                               setSku={setSku}
+                               setFilter={setFilter}/>
     });
 
-    const showing = productRows.length;
+    const showing = productListRows.length;
     const total = Object.values(productMap).length;
 
     return (
@@ -87,7 +88,7 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
                 <BulkUpdate addProductsToLoadingQueue={addProductsToLoadingQueue}/>
             </div>
 
-            {productRows.length > 0 &&
+            {productListRows.length > 0 &&
                 <table className="striped">
                     <thead>
                         <tr>
@@ -103,7 +104,7 @@ function ProductList({productMap, loadingQueueLookup, addProductsToLoadingQueue,
                         </tr>
                     </thead>
                     <tbody>
-                    {productRows}
+                    {productListRows}
                     </tbody>
                 </table>
             }

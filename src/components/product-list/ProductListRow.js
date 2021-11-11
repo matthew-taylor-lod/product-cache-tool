@@ -1,8 +1,7 @@
-
 import React from "react";
-import("./ProductRow.scss");
+import("./ProductListRow.scss");
 
-function ProductRow({product, isLoading, addProductsToLoadingQueue, setSku, setFilter}) {
+function ProductListRow({product, isLoading, addProductsToLoadingQueue, setSku, setFilter}) {
 
     const hasMessage = (
         product.previewMissing ||
@@ -20,7 +19,7 @@ function ProductRow({product, isLoading, addProductsToLoadingQueue, setSku, setF
     </ul>
 
     function getMainClassName() {
-        return "ProductRow"
+        return "ProductListRow"
             + (isLoading ? " loading-product" : "")
             + ((product.deliveryInconsistent || product.imageMissing) ? " product-error" : "")
             + ((product.previewMissing || product.deliveryMissing || product.unpublishedChanges) ? " product-unpublished" : "");
@@ -88,4 +87,4 @@ function InStockTd({product}) {
     );
 }
 
-export default ProductRow;
+export default ProductListRow;

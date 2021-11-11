@@ -1,8 +1,8 @@
 import axios from "axios";
 import {getProductData} from "./utils";
 import React, {useEffect, useState} from "react";
-import ProductList from "./ProductList";
-import Product from "./Product";
+import ProductList from "./product-list/ProductList";
+import ProductInformation from "./product-information/ProductInformation";
 
 function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sortBy, setSortBy}) {
 
@@ -130,10 +130,10 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
 
     return (
         <>
-            {sku && <Product environmentConfig={environmentConfig}
-                             tenant={tenant}
-                             sku={sku}
-                             setSku={setSku}/>
+            {sku && <ProductInformation environmentConfig={environmentConfig}
+                                        tenant={tenant}
+                                        sku={sku}
+                                        setSku={setSku}/>
             }
             <ProductList productMap={productMap}
                          loadingQueueLookup={loadingQueueLookup}

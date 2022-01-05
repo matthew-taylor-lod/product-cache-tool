@@ -86,11 +86,11 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
                 setLoadingQueueLookup(new Set(loadingQueueLookup));
 
                 // update product or delete from the productMap if it doesn't exist
-                if (product.previewMissing && product.deliveryMissing) {
-                    delete productMap[product.sku];
+                if (product.existsInAdmin) {
+                    productMap[product.sku] = product;
                 }
                 else {
-                    productMap[product.sku] = product;
+                    delete productMap[product.sku];
                 }
                 setProductMap({...productMap})
 

@@ -58,6 +58,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
     // flags
     product["deliveryMissing"] = (deliveryData.length !== environmentConfiguration.deliveryServers) || !productInformation["cmsProductId"];
     product["deliveryInconsistent"] = deliveryInconsistent;
+    product["existsInAdmin"] = Object.keys(productInformation).length > 1; // if more than just the SKU returned, then the product exists in admin
 
     // get filterable data
     const filterableFields = [

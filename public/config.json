@@ -59,7 +59,8 @@
         "uk",
         "ls",
         "ns",
-        "ie"
+        "ie",
+        "newie"
       ],
       "previewHostname": "dt-dev2-mgmt-01",
       "deliveryServers": 1,
@@ -113,6 +114,9 @@
     },
     "ie": {
       "name": "IE"
+    },
+    "newie" : {
+      "name": "new IE"
     }
   }
 }

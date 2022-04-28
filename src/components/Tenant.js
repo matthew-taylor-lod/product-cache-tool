@@ -3,6 +3,7 @@ import {getProductData} from "./utils";
 import React, {useEffect, useState} from "react";
 import ProductList from "./product-list/ProductList";
 import ProductInformation from "./product-information/ProductInformation";
+import "./Tenant.scss"
 
 function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sortBy, setSortBy}) {
 
@@ -10,6 +11,7 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
     const [loadingQueue, setLoadingQueue] = useState([]);
     const [loadingQueueLookup, setLoadingQueueLookup] = useState(new Set());
     const [loading, setLoading] = useState(false);
+    const [couldNotLoadProducts, setCouldNotLoadProducts] = useState(false);
 
     const productsCallSuffix = "/blueprint/servlet/eh/{tenant}/api/products";
     const updateCallSuffix = "/blueprint/servlet/eh/{tenant}/api/productCache/{sku}";
@@ -49,8 +51,10 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
             });
 
             setProductMap(pm);
+        }).catch(error => {
+            setCouldNotLoadProducts(true);
         });
-    }, [environmentConfig, tenant, setProductMap]);
+    }, [environmentConfig, tenant, setProductMap, setCouldNotLoadProducts]);
 
     useEffect(() => {
         if (!loading && loadingQueue.length > 0) {
@@ -128,13 +132,21 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
         }
     }
 
-    return (
-        <>
-            {sku && <ProductInformation environmentConfig={environmentConfig}
-                                        tenant={tenant}
-                                        sku={sku}
-                                        setSku={setSku}/>
-            }
+    const body = (() => {
+        if (couldNotLoadProducts) {
+            return (
+                <div className="could-not-access-product-cache">
+                    <h1>Error accessing the product cache.</h1>
+                    <p>Probable causes:</p>
+                    <ul>
+                        <li><b>Firewall restrictions</b> - you are not signed into the VPN, or if in the Office, connected to the correct network.</li>
+                        <li><b>Connectivity issues</b> - the Internet connection you are using is unstable.</li>
+                        <li><b>The server is down</b> - the given server is not currently running.</li>
+                    </ul>
+                </div>
+            )
+        }
+        return (
             <ProductList productMap={productMap}
                          loadingQueueLookup={loadingQueueLookup}
                          addProductsToLoadingQueue={addProductsToLoadingQueue}
@@ -144,7 +156,18 @@ function Tenant({tenant, environmentConfig, sku, setSku, filter, setFilter, sort
                          setFilter={setFilter}
                          sortBy={sortBy}
                          setSortBy={setSortBy}/>
-        </>
+        )
+    })();
+
+    return (
+        <div className="Tenant">
+            {sku && <ProductInformation environmentConfig={environmentConfig}
+                                        tenant={tenant}
+                                        sku={sku}
+                                        setSku={setSku}/>
+            }
+            {body}
+        </div>
     )
 }
 

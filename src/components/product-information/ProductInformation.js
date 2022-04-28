@@ -77,6 +77,7 @@ function ProductInformation({environmentConfig, tenant, sku, setSku}) {
         'prescriptionFrequencyMode',
         'reviewFrequency',
         'reviewFrequencyMode',
+        'existingActiveSubscriptionPageURL',
         'drugType',
         'consultationFee',
         'consultationTitle',

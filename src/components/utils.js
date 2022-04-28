@@ -33,7 +33,9 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         ? productInformation.currency + Number(productInformation.price).toFixed(2)
         : ""
 
-    product["imageMissing"] = !productInformation.imageURL;
+    product["imageMissing"] = !productInformation.imageURL && !(tenant === "ie");
+    product["existingActiveSubscriptionPageUrlMissing"] =
+        productInformation.salProductType === "Plan" && !productInformation.existingActiveSubscriptionPageURL
 
     product["inStock"] = productInformation.inStock;
 
@@ -48,7 +50,9 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         product["cmsProductProxyOutOfStock"] = previewProductInformation.cmsProductProxyOutOfStock;
 
         product["unpublishedChanges"] = !flatMapEqual(productInformation, previewProductInformation,
-            (v => String(v).replace(/\/blueprint\/servlet/, ""))) && !deliveryInconsistent;
+            (v => String(v)
+                .replace("/blueprint/servlet/page", "").replace("/blueprint/servlet", ""))
+            ) && !deliveryInconsistent;
     }
     else {
         product["previewMissing"] = true;
@@ -73,6 +77,7 @@ export function getProductData(consolidatedProductInformation, environmentConfig
         (product.deliveryMissing) ? "!delivery-missing" : "",
         (product.deliveryInconsistent) ? "!delivery-inconsistent" : "",
         (product.imageMissing) ? "!image-missing" : "",
+        (product.existingActiveSubscriptionPageUrlMissing) ? "!existing-active-subscription-page-url-missing" : "",
     ];
 
     product["filterableString"] = filterableFields.join("\n").toUpperCase();

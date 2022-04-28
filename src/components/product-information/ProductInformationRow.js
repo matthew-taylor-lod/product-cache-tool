@@ -5,7 +5,7 @@ function ProductInformationRow({field, productCacheEntries}) {
         .replace(/^./, function(str){ return str.toUpperCase();});
 
     const inconsistent = new Set(productCacheEntries.map(
-        pce => String(pce.data[field]).replace("/blueprint/servlet", ""))).size > 1;
+        pce => String(pce.data[field]).replace("/blueprint/servlet/page", "").replace("/blueprint/servlet", ""))).size > 1;
 
     const valueRows = productCacheEntries.map(
         pce => <ProductInformationTd key={pce.hostname}
@@ -40,7 +40,12 @@ function ProductInformationTd({field, rawValue, hostname, origin}) {
             <img className="thumbnail" src={url} title={value} alt={value}/>
             <div className="file-name">{id}/{fileName}</div>
         </td>
-    } else {
+    }
+    if (field === "existingActiveSubscriptionPageURL" && value) {
+        const valueMinusPrefix = value.replace("/blueprint/servlet/page", "");
+        return <td key={hostname}>{valueMinusPrefix}</td>
+    }
+    else {
         return <td key={hostname}>{value}</td>
     }
 }

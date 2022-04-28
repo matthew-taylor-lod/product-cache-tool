@@ -8,20 +8,22 @@ function ProductListRow({product, isLoading, addProductsToLoadingQueue, setSku, 
         product.deliveryMissing ||
         product.unpublishedChanges ||
         product.deliveryInconsistent ||
-        product.imageMissing);
+        product.imageMissing ||
+        product.existingActiveSubscriptionPageUrlMissing);
 
     const errors = <ul className="error-list small">
         {product.deliveryInconsistent && <li>Inconsistent</li>}
         {product.previewMissing && <li>Missing from Preview</li>}
         {product.deliveryMissing && <li>Missing from Live</li>}
         {product.imageMissing && <li>Image missing</li>}
+        {product.existingActiveSubscriptionPageUrlMissing && <li>Existing Active Subscription Page URL missing</li>}
         {product.unpublishedChanges && <li>Unpublished changes</li>}
     </ul>
 
     function getMainClassName() {
         return "ProductListRow"
             + (isLoading ? " loading-product" : "")
-            + ((product.deliveryInconsistent || product.imageMissing) ? " product-error" : "")
+            + ((product.deliveryInconsistent || product.imageMissing || product.existingActiveSubscriptionPageUrlMissing) ? " product-error" : "")
             + ((product.previewMissing || product.deliveryMissing || product.unpublishedChanges) ? " product-unpublished" : "");
     }
 
